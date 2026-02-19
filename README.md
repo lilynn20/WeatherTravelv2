@@ -1,10 +1,10 @@
-# 🌍 WeatherTravel - Application React de Planification Météo
+# WeatherTravel - Application React de Planification Météo
 
 Application React moderne permettant de planifier des voyages en fonction des conditions météorologiques. Utilise Redux Toolkit pour la gestion d'état et l'API OpenWeatherMap pour les données météo en temps réel.
 
-## 📋 Fonctionnalités
+##  Fonctionnalités
 
-### ✅ Fonctionnalités implémentées
+###  Fonctionnalités implémentées
 
 - **Recherche de ville** : Formulaire de recherche avec validation complète
 - **Météo actuelle** : Affichage détaillé des conditions météo (température, humidité, vent, pression)
@@ -17,7 +17,7 @@ Application React moderne permettant de planifier des voyages en fonction des co
 - **Page 404** : Page d'erreur personnalisée
 - **Navigation** : React Router avec 4 routes (Home, Dashboard, CityDetail, NotFound)
 
-## 🛠 Technologies utilisées
+##  Technologies utilisées
 
 - **React 18** : Bibliothèque UI avec hooks
 - **Redux Toolkit** : Gestion d'état centralisée avec slices et async thunks
@@ -27,7 +27,7 @@ Application React moderne permettant de planifier des voyages en fonction des co
 - **Vite** : Build tool moderne et rapide
 - **OpenWeatherMap API** : Données météo en temps réel
 
-## 📦 Installation
+##  Installation
 
 ### Prérequis
 
@@ -68,7 +68,7 @@ npm run build
 npm run preview
 ```
 
-## 🏗 Architecture du projet
+##  Architecture du projet
 
 ```
 weathertravel/
@@ -105,7 +105,7 @@ weathertravel/
 └── README.md                           # Ce fichier
 ```
 
-## 🎯 Utilisation
+##  Utilisation
 
 ### 1. Page d'accueil (Recherche)
 - Entrer le nom d'une ville dans le formulaire
@@ -124,7 +124,7 @@ weathertravel/
 - Consulter les prévisions sur 5 jours
 - Épingler la ville si elle ne l'est pas déjà
 
-## 🔧 Gestion d'état Redux
+##  Gestion d'état Redux
 
 ### Slices Redux
 
@@ -151,7 +151,7 @@ Actions :
 - `updateCityWeather(weatherData)` : Met à jour la météo d'une ville
 - `clearAllFavorites()` : Efface tous les favoris
 
-## 📝 Validation du formulaire
+##  Validation du formulaire
 
 Le formulaire de recherche implémente plusieurs validations :
 
@@ -161,7 +161,7 @@ Le formulaire de recherche implémente plusieurs validations :
 4. **Feedback visuel** : Messages d'erreur en temps réel
 5. **État désactivé** : Pendant le chargement
 
-## 🎨 Design et UX
+##  Design et UX
 
 - **Design responsive** : S'adapte à tous les écrans (mobile, tablette, desktop)
 - **Animations** : Transitions fluides et spinners de chargement
@@ -170,18 +170,18 @@ Le formulaire de recherche implémente plusieurs validations :
 - **Messages clairs** : Erreurs et états vides bien expliqués
 - **Tailwind CSS** : Styling moderne et cohérent
 
-## 🔄 Gestion des états asynchrones
+##  Gestion des états asynchrones
 
 Chaque requête API passe par 3 états :
 1. **Pending** : Affichage du loader
 2. **Fulfilled** : Affichage des données
 3. **Rejected** : Affichage de l'erreur avec possibilité de réessayer
 
-## 💾 Persistance des données
+##  Persistance des données
 
 Les villes favorites sont automatiquement sauvegardées dans le `localStorage` du navigateur, permettant de conserver les données entre les sessions.
 
-## ⚠️ Gestion des erreurs
+##  Gestion des erreurs
 
 Types d'erreurs gérées :
 - **CITY_NOT_FOUND** : Ville introuvable (404)
@@ -190,7 +190,7 @@ Types d'erreurs gérées :
 - **EMPTY_FIELD** : Champ de recherche vide
 - **GENERIC_ERROR** : Erreurs génériques
 
-## 🚀 Améliorations possibles
+##  Améliorations possibles
 
 - [ ] Ajout d'un mode sombre
 - [ ] Graphiques pour les prévisions
@@ -202,11 +202,11 @@ Types d'erreurs gérées :
 - [ ] PWA (Progressive Web App)
 - [ ] Tests unitaires et E2E
 
-## 📄 Licence
+##  Licence
 
 Ce projet est créé dans un cadre pédagogique.
 
-## 👨‍💻 Auteur
+##  Auteur
 
 Projet WeatherTravel - Application React avec Redux Toolkit
 
