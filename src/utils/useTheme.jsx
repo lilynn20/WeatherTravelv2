@@ -36,9 +36,11 @@ export const ThemeProvider = ({ children }) => {
     // Met à jour la classe du document et sauvegarde la préférence
     if (isDark) {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
       localStorage.setItem('theme-preference', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
       localStorage.setItem('theme-preference', 'light');
     }
   }, [isDark]);

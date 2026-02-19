@@ -18,16 +18,7 @@ import { useTheme } from "./utils/useTheme.jsx";
  */
 function App() {
   const favoritesCount = useSelector((state) => state.favorites.cities.length);
-  const themeContext = useTheme();
-  const isDark = themeContext?.isDark;
-  const toggleTheme = themeContext?.toggleTheme;
-
-  const handleThemeToggle = () => {
-    console.log('Toggle clicked, isDark:', isDark);
-    if (toggleTheme) {
-      toggleTheme();
-    }
-  };
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <Router>
@@ -83,8 +74,8 @@ function App() {
               {/* Theme Toggle Button */}
               <button
                 type="button"
-                onClick={handleThemeToggle}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 text-xl"
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 text-xl cursor-pointer"
                 aria-label="Toggle theme"
                 title={isDark ? "Basculer en mode clair" : "Basculer en mode sombre"}
               >
