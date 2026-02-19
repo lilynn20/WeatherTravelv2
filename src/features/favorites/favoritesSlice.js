@@ -13,7 +13,6 @@ const loadFavoritesFromStorage = () => {
     const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
-    console.error('Erreur lors du chargement des favoris:', error);
     return [];
   }
 };
@@ -25,7 +24,7 @@ const saveFavoritesToStorage = (favorites) => {
   try {
     localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde des favoris:', error);
+    // Silently fail if storage is unavailable
   }
 };
 

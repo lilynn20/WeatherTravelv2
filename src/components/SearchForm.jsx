@@ -58,7 +58,6 @@ const SearchForm = ({ onSearch, loading = false }) => {
         },
         (error) => {
           setError('Impossible d\'accéder à votre position.');
-          console.error('Geolocation error:', error);
         }
       );
     } else {

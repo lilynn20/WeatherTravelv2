@@ -46,10 +46,6 @@ class EmailService {
         );
       }
 
-      console.log('📧 Préparation de l\'email...');
-      console.log('Destinataire:', userEmail);
-      console.log('Ville:', cityName);
-
       // Formater la date
       const formattedDate = new Date(travelDate).toLocaleDateString('fr-FR', {
         weekday: 'long',
@@ -79,24 +75,13 @@ class EmailService {
         packing_tips: this.getPackingTips(weatherInfo),
       };
 
-      console.log('📋 Paramètres de l\'email:', {
-        destinataire: templateParams.to_email,
-        ville: templateParams.city_name,
-        date: templateParams.travel_date,
-      });
-
       // Envoyer l'email via EmailJS
-      console.log('📤 Envoi en cours...');
       const response = await emailjs.send(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID,
         templateParams
       );
 
-      console.log('✅ Email envoyé avec succès!');
-      console.log('Réponse EmailJS:', response);
-      console.log('⚠️ IMPORTANT: Vérifiez que l\'email a été reçu à:', userEmail);
-      console.log('Si l\'email n\'arrive pas à cette adresse, consultez EMAIL_FIX_URGENT.md');
       
       return {
         success: true,
@@ -104,8 +89,6 @@ class EmailService {
         response,
       };
     } catch (error) {
-      console.error('❌ Erreur lors de l\'envoi de l\'email:', error);
-      console.error('Détails de l\'erreur:', error.text || error.message);
       throw new Error(this.getErrorMessage(error));
     }
   }

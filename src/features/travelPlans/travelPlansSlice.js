@@ -25,7 +25,6 @@ const loadTravelPlansFromStorage = () => {
     const stored = localStorage.getItem('weathertravel_plans');
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
-    console.error('Erreur lors du chargement des plans:', error);
     return [];
   }
 };
@@ -35,7 +34,7 @@ const saveTravelPlansToStorage = (plans) => {
   try {
     localStorage.setItem('weathertravel_plans', JSON.stringify(plans));
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde des plans:', error);
+    // Silently fail if storage is unavailable
   }
 };
 
