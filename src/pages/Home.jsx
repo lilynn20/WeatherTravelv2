@@ -47,14 +47,19 @@ const Home = () => {
       <div className="max-w-4xl mx-auto">
         {/* En-tête */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            🌍 WeatherTravel
+          <div className="flex justify-center gap-2 mb-4">
+            <span className="accent-dot bg-amber-300/90"></span>
+            <span className="accent-dot bg-fuchsia-300/80"></span>
+            <span className="accent-dot bg-sky-300/80"></span>
+          </div>
+          <h1 className="text-6xl md:text-7xl brand-script text-slate-900 dark:text-slate-100 mb-3">
+            WeatherTravel
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
-            Planifiez vos voyages en fonction de la météo
+          <p className="text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">
+            Assistant Voyage Meteo
           </p>
-          <p className="text-gray-500 dark:text-gray-400">
-            Recherchez une ville pour consulter sa météo actuelle
+          <p className="text-lg text-slate-600 dark:text-slate-300 mt-4">
+            Planifiez vos voyages en fonction de la meteo
           </p>
         </div>
 
@@ -104,31 +109,31 @@ const Home = () => {
 
         {/* Guide d'utilisation */}
         <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="text-center p-6">
+          <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">🔍</div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Recherchez
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Entrez le nom d'une ville pour consulter sa météo
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Entrez le nom d'une ville pour consulter sa meteo
             </p>
           </div>
-          <div className="text-center p-6">
+          <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">⭐</div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-              Épinglez
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Epinglez
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Ajoutez vos destinations favorites à votre dashboard
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Ajoutez vos destinations favorites a votre dashboard
             </p>
           </div>
-          <div className="text-center p-6">
+          <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">✈️</div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Voyagez
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Planifiez vos déplacements selon les conditions météo
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Planifiez vos deplacements selon les conditions meteo
             </p>
           </div>
         </div>

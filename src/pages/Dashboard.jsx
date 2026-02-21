@@ -89,11 +89,15 @@ const Dashboard = () => {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                🗺️ Mon Tableau de Bord
+              <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 mb-2">
+                <span className="accent-dot bg-fuchsia-300/80"></span>
+                Tableau de bord
+              </div>
+              <h1 className="text-4xl md:text-5xl brand-script text-slate-900 dark:text-slate-100 mb-2">
+                Mes destinations
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Gérez vos destinations favorites et vos voyages planifiés
+              <p className="text-slate-600 dark:text-slate-300">
+                Gere vos destinations favorites et vos voyages planifies
               </p>
             </div>
             <div className="flex gap-3">
@@ -107,31 +111,31 @@ const Dashboard = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700 mb-6">
+          <div className="flex gap-2 border-b border-slate-200/60 dark:border-slate-700/60 mb-6">
             <button
               onClick={() => setActiveTab('favorites')}
               className={`px-4 py-3 font-medium relative ${
                 activeTab === 'favorites'
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'
+                  ? 'text-slate-900 dark:text-slate-100'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
               📌 Favoris ({favorites.length})
               {activeTab === 'favorites' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
               )}
             </button>
             <button
               onClick={() => setActiveTab('plans')}
               className={`px-4 py-3 font-medium relative ${
                 activeTab === 'plans'
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300'
+                  ? 'text-slate-900 dark:text-slate-100'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
               ✈️ Voyages planifiés ({travelPlans.length})
               {activeTab === 'plans' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
               )}
             </button>
           </div>
@@ -282,11 +286,11 @@ const Dashboard = () => {
         {/* Conseils */}
         {((activeTab === 'favorites' && favorites.length > 0) || 
           (activeTab === 'plans' && travelPlans.length > 0)) && (
-          <div className="mt-12 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2">
+          <div className="mt-12 bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl p-6">
+            <h4 className="font-semibold text-slate-900 dark:text-slate-200 mb-2 flex items-center gap-2">
               💡 Conseil {activeTab === 'favorites' ? 'de voyage' : 'pour vos voyages'}
             </h4>
-            <p className="text-blue-800 dark:text-blue-200 text-sm">
+            <p className="text-slate-600 dark:text-slate-300 text-sm">
               {activeTab === 'favorites' 
                 ? 'Consultez les détails météo de chaque ville pour planifier au mieux vos déplacements. Les températures et conditions peuvent varier rapidement !'
                 : 'Vérifiez la météo quelques jours avant votre départ pour ajuster vos bagages. Les prévisions peuvent évoluer !'}

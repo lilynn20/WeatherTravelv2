@@ -150,10 +150,14 @@ const CityDetail = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Colonne gauche - Info principale */}
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 mb-2">
+                <span className="accent-dot bg-sky-300/80"></span>
+                Meteo du jour
+              </div>
+              <h1 className="text-4xl md:text-5xl brand-script text-slate-900 dark:text-slate-100 mb-2">
                 {currentWeather.name}, {currentWeather.sys.country}
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 capitalize mb-6">
+              <p className="text-lg text-slate-600 dark:text-slate-300 capitalize mb-6">
                 {currentWeather.weather[0].description}
               </p>
               

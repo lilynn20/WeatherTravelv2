@@ -65,48 +65,50 @@ function App() {
     <Router>
       <ToastNotifications />
       {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
+      <nav className="sticky top-6 z-50 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="border border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md rounded-[32px]">
+            <div className="flex justify-between items-center h-16 px-6">
             {/* Logo */}
             <NavLink
               to="/"
-              className="flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white hover:text-primary"
+              className="flex items-center gap-4 text-slate-900 dark:text-slate-100"
             >
-              <span className="text-2xl"></span>
-              WeatherTravel
+              <span className="inline-flex flex-col gap-1">
+                <span className="h-1 w-6 rounded-full bg-amber-300/90"></span>
+                <span className="h-1 w-4 rounded-full bg-amber-300/90 ml-2"></span>
+              </span>
+              <span className="text-3xl brand-script">WeatherTravel</span>
             </NavLink>
 
             {/* Liens de navigation et bouton thème */}
-            <div className="flex gap-6 items-center">
-              <div className="flex gap-6">
+            <div className="flex gap-4 items-center">
+              <div className="flex gap-2">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 font-medium ${
+                    `px-4 py-1.5 rounded-full text-sm font-semibold border ${
                       isActive
-                        ? "text-primary border-b-2 border-primary"
-                        : "text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-blue-400"
+                        ? "text-slate-900 dark:text-slate-100 border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70"
+                        : "text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200"
                     }`
                   }
                 >
-                  <span></span>
                   Recherche
                 </NavLink>
                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) =>
-                    `flex items-center gap-2 font-medium ${
+                    `px-4 py-1.5 rounded-full text-sm font-semibold border ${
                       isActive
-                        ? "text-primary border-b-2 border-primary"
-                        : "text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-blue-400"
+                        ? "text-slate-900 dark:text-slate-100 border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70"
+                        : "text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200"
                     }`
                   }
                 >
-                  <span></span>
                   Mes destinations
                   {favoritesCount > 0 && (
-                    <span className="bg-primary text-white text-xs rounded-full px-2 py-0.5">
+                    <span className="ml-2 bg-primary/15 text-primary text-xs rounded-full px-2 py-0.5">
                       {favoritesCount}
                     </span>
                   )}
@@ -117,7 +119,7 @@ function App() {
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 text-xl cursor-pointer"
+                className="p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 text-lg"
                 aria-label="Toggle theme"
                 title={isDark ? "Basculer en mode clair" : "Basculer en mode sombre"}
               >
@@ -125,6 +127,7 @@ function App() {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </nav>
 
@@ -137,18 +140,18 @@ function App() {
       </Routes>
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+      <footer className="mt-16 px-4">
+        <div className="max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-700/60 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-gray-600 dark:text-gray-400 text-sm">
+            <div className="text-slate-500 dark:text-slate-400 text-sm">
               © 2026 WeatherTravel - Projet React avec Redux Toolkit
             </div>
-            <div className="flex gap-6 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
               <a
                 href="https://openweathermap.org/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary dark:hover:text-blue-400"
+                className="hover:text-slate-700 dark:hover:text-slate-200"
               >
                 Propulsé par OpenWeatherMap
               </a>

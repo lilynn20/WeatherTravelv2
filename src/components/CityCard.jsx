@@ -78,15 +78,16 @@ const CityCard = ({ city, onRemove }) => {
       <div className="flex gap-2">
         <button
           onClick={handleViewDetails}
-          className="btn-secondary flex-1 text-sm"
+          className="flex-1 text-sm px-4 py-2 rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200"
         >
-          📊 Détails
+          Voir details
         </button>
         <button
           onClick={() => onRemove(city)}
-          className="btn-danger text-sm"
+          className="text-sm px-4 py-2 rounded-full border border-red-200/70 dark:border-red-800/60 bg-white/70 dark:bg-slate-900/60 text-red-500"
+          aria-label="Supprimer la ville"
         >
-          🗑️
+          Supprimer
         </button>
       </div>
     </div>

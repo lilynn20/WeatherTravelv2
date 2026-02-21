@@ -155,32 +155,32 @@ const WeatherCard = ({ weatherData }) => {
             {!isFavorite ? (
               <button
                 onClick={handleAddToFavorites}
-                className="btn-primary flex-1"
+                className="flex-1 rounded-full bg-primary/90 text-white text-sm font-semibold px-6 py-3 shadow-sm"
               >
-                ⭐ Épingler cette ville
+                Epingler cette ville
               </button>
             ) : (
               <button
                 disabled
-                className="btn-secondary flex-1 opacity-60 cursor-not-allowed"
+                className="flex-1 rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 text-slate-500 text-sm font-semibold px-6 py-3 cursor-not-allowed"
               >
-                ✓ Déjà épinglée
+                Deja epinglee
               </button>
             )}
             <button
               onClick={handleViewDetails}
-              className="btn-secondary"
+              className="rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200 text-sm font-semibold px-5 py-3"
             >
-              📊 Voir détails
+              Voir details
             </button>
           </div>
           
           {/* Nouveau bouton Planifier le voyage */}
           <button
             onClick={handlePlanTravel}
-            className="btn-primary w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+            className="w-full rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/70 text-slate-900 dark:text-slate-100 text-sm font-semibold px-6 py-3"
           >
-            ✈️ Planifier un voyage
+            Planifier un voyage
           </button>
         </div>
       </div>
