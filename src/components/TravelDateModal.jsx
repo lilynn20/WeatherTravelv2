@@ -165,18 +165,24 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/70 backdrop-blur-md rounded-[28px] shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* En-tête */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-lg">
+        <div className="px-6 pt-6 pb-4 border-b border-slate-200/60 dark:border-slate-700/60">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold mb-1">Planifier votre voyage</h2>
-              <p className="text-blue-100 text-sm">{cityData.name}</p>
+              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 mb-2">
+                <span className="accent-dot bg-amber-300/90"></span>
+                Planification
+              </div>
+              <h2 className="text-3xl brand-script text-slate-900 dark:text-slate-100 mb-1">
+                {cityData.name}
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Planifiez votre voyage</p>
             </div>
             <button
               onClick={handleClose}
-              className="text-white hover:text-gray-200"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-300"
               aria-label="Fermer"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +196,7 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {/* Message de succès */}
           {showSuccess && (
-            <div className="bg-green-50 dark:bg-green-900 dark:bg-opacity-20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 px-4 py-3 rounded-lg flex items-center">
+            <div className="bg-emerald-50/70 dark:bg-emerald-900/30 border border-emerald-200/70 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200 px-4 py-3 rounded-2xl flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
@@ -202,15 +208,15 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
 
           {/* Message d'erreur */}
           {error && (
-            <div className="bg-red-50 dark:bg-red-900 dark:bg-opacity-20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 px-4 py-3 rounded-lg">
+            <div className="bg-red-50/70 dark:bg-red-900/30 border border-red-200/70 dark:border-red-800/60 text-red-800 dark:text-red-200 px-4 py-3 rounded-2xl">
               <p className="text-sm">{error}</p>
             </div>
           )}
 
           {/* Date de voyage */}
           <div>
-            <label htmlFor="travelDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              📅 Date de voyage *
+            <label htmlFor="travelDate" className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
+              Date de voyage *
             </label>
             <input
               type="date"
@@ -220,8 +226,8 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
               onChange={handleChange}
               min={getMinDate()}
               max={getMaxDate()}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                formErrors.travelDate ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              className={`w-full px-4 py-2.5 border rounded-2xl focus:ring-2 focus:ring-primary/40 focus:border-transparent bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 ${
+                formErrors.travelDate ? 'border-red-400' : 'border-slate-200/70 dark:border-slate-700/60'
               }`}
               required
             />
@@ -231,20 +237,20 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
           </div>
 
           {/* Checkbox pour le rappel */}
-          <div className="bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 p-4 rounded-lg">
+          <div className="bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-700/60 p-4 rounded-2xl">
             <label className="flex items-start cursor-pointer">
               <input
                 type="checkbox"
                 name="sendReminder"
                 checked={formData.sendReminder}
                 onChange={handleChange}
-                className="mt-1 h-4 w-4 text-blue-600 dark:text-blue-400 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+                className="mt-1 h-4 w-4 text-primary focus:ring-primary/40 border-slate-300 dark:border-slate-600 rounded"
               />
               <span className="ml-3">
-                <span className="block text-sm font-medium text-gray-900 dark:text-white">
-                  📧 Recevoir un rappel par email
+                <span className="block text-sm font-medium text-slate-900 dark:text-slate-100">
+                  Recevoir un rappel par email
                 </span>
-                <span className="block text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <span className="block text-xs text-slate-600 dark:text-slate-300 mt-1">
                   Un email avec les informations météo et des conseils sera envoyé
                 </span>
               </span>
@@ -254,8 +260,8 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
           {/* Email (conditionnel) */}
           {formData.sendReminder && (
             <div className="animate-fadeIn">
-              <label htmlFor="userEmail" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                ✉️ Votre email *
+              <label htmlFor="userEmail" className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
+                Votre email *
               </label>
               <input
                 type="email"
@@ -264,15 +270,15 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
                 value={formData.userEmail}
                 onChange={handleChange}
                 placeholder="exemple@email.com"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${
-                  formErrors.userEmail ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                className={`w-full px-4 py-2.5 border rounded-2xl focus:ring-2 focus:ring-primary/40 focus:border-transparent bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 ${
+                  formErrors.userEmail ? 'border-red-400' : 'border-slate-200/70 dark:border-slate-700/60'
                 }`}
                 required={formData.sendReminder}
               />
               {formErrors.userEmail && (
                 <p className="text-red-500 dark:text-red-400 text-sm mt-1">{formErrors.userEmail}</p>
               )}
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 L'email sera envoyé à cette adresse immédiatement
               </p>
             </div>
@@ -280,20 +286,20 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
 
           {/* Aperçu météo */}
           {cityData.weather && (
-            <div className="bg-gradient-to-r from-blue-50 dark:from-blue-900 dark:from-opacity-20 to-purple-50 dark:to-purple-900 dark:to-opacity-20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-2">🌤️ Météo actuelle</h3>
+            <div className="bg-white/70 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">Meteo actuelle</h3>
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div>
-                  <span className="text-gray-600 dark:text-gray-400">Température:</span>
-                  <span className="ml-2 font-medium text-gray-900 dark:text-white">{Math.round(cityData.weather.temp)}°C</span>
+                  <span className="text-slate-600 dark:text-slate-400">Temperature:</span>
+                  <span className="ml-2 font-medium text-slate-900 dark:text-slate-100">{Math.round(cityData.weather.temp)}°C</span>
                 </div>
                 <div>
-                  <span className="text-gray-600 dark:text-gray-400">Ressenti:</span>
-                  <span className="ml-2 font-medium text-gray-900 dark:text-white">{Math.round(cityData.weather.feelsLike)}°C</span>
+                  <span className="text-slate-600 dark:text-slate-400">Ressenti:</span>
+                  <span className="ml-2 font-medium text-slate-900 dark:text-slate-100">{Math.round(cityData.weather.feelsLike)}°C</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-gray-600 dark:text-gray-400">Conditions:</span>
-                  <span className="ml-2 font-medium capitalize text-gray-900 dark:text-white">{cityData.weather.description}</span>
+                  <span className="text-slate-600 dark:text-slate-400">Conditions:</span>
+                  <span className="ml-2 font-medium capitalize text-slate-900 dark:text-slate-100">{cityData.weather.description}</span>
                 </div>
               </div>
             </div>
@@ -301,26 +307,26 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
 
           {/* Info sur l'ajout automatique aux favoris */}
           {!isFavorite && (
-            <div className="bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-              <p className="text-xs text-yellow-800 dark:text-yellow-300">
-                ⭐ Cette ville sera automatiquement ajoutée à vos destinations favorites
+            <div className="bg-amber-50/70 dark:bg-amber-900/30 border border-amber-200/70 dark:border-amber-800/60 rounded-2xl p-3">
+              <p className="text-xs text-amber-800 dark:text-amber-200">
+                Cette ville sera automatiquement ajoutee a vos destinations favorites
               </p>
             </div>
           )}
 
           {/* Boutons */}
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium"
+              className="flex-1 px-4 py-2.5 border border-slate-200/70 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 rounded-full bg-white/80 dark:bg-slate-900/60 font-medium"
               disabled={emailSending}
             >
               Annuler
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="flex-1 px-4 py-2.5 bg-primary/90 text-white rounded-full font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               disabled={emailSending || showSuccess}
             >
               {emailSending ? (
@@ -339,7 +345,7 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
                   Planifié !
                 </>
               ) : (
-                '✈️ Planifier le voyage'
+                'Planifier le voyage'
               )}
             </button>
           </div>

@@ -100,7 +100,7 @@ const TravelPlanCard = ({ plan }) => {
     <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700 hover:shadow-lg dark:hover:shadow-gray-600 overflow-hidden ${isPastTrip ? 'opacity-60' : ''}`}>
       {/* En-tête avec gradient */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
           <div>
             <h3 className="text-xl font-bold">{plan.cityName}</h3>
             <p className="text-blue-100 text-sm mt-1">{formatDate(plan.travelDate)}</p>
@@ -137,7 +137,7 @@ const TravelPlanCard = ({ plan }) => {
         )}
 
         {/* Statut de l'email */}
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
           <div className="flex items-center">
             <span className="text-gray-600 dark:text-gray-400">Email:</span>
             <span className="ml-2 font-medium text-gray-800 dark:text-gray-200">{plan.userEmail}</span>
@@ -160,7 +160,7 @@ const TravelPlanCard = ({ plan }) => {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
           {!isPastTrip && plan.userEmail && (
             <button
               onClick={handleResendEmail}

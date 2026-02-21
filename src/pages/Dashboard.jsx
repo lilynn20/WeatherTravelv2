@@ -87,7 +87,7 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto">
         {/* En-tête */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 mb-2">
                 <span className="accent-dot bg-fuchsia-300/80"></span>
@@ -100,7 +100,7 @@ const Dashboard = () => {
                 Gere vos destinations favorites et vos voyages planifies
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleGoToSearch}
                 className="btn-secondary"
@@ -111,7 +111,7 @@ const Dashboard = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 border-b border-slate-200/60 dark:border-slate-700/60 mb-6">
+          <div className="flex flex-wrap gap-2 border-b border-slate-200/60 dark:border-slate-700/60 mb-6">
             <button
               onClick={() => setActiveTab('favorites')}
               className={`px-4 py-3 font-medium relative ${

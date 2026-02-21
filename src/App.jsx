@@ -65,10 +65,10 @@ function App() {
     <Router>
       <ToastNotifications />
       {/* Navigation */}
-      <nav className="sticky top-6 z-50 px-4">
+      <nav className="sticky top-4 z-50 px-3 sm:px-4">
         <div className="max-w-6xl mx-auto">
           <div className="border border-slate-200/60 dark:border-slate-700/60 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md rounded-[32px]">
-            <div className="flex justify-between items-center h-16 px-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 py-3 md:h-16 md:px-6">
             {/* Logo */}
             <NavLink
               to="/"
@@ -82,8 +82,8 @@ function App() {
             </NavLink>
 
             {/* Liens de navigation et bouton thème */}
-            <div className="flex gap-4 items-center">
-              <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="flex flex-wrap gap-2">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
@@ -119,7 +119,7 @@ function App() {
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 text-lg"
+                className="p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 text-base"
                 aria-label="Toggle theme"
                 title={isDark ? "Basculer en mode clair" : "Basculer en mode sombre"}
               >

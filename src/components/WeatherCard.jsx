@@ -90,22 +90,22 @@ const WeatherCard = ({ weatherData }) => {
     <>
       <div className="card">
         {/* En-tête */}
-        <div className="flex justify-between items-start mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
               {name}, {sys.country}
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mt-1 capitalize">
               {weather[0].description}
             </p>
           </div>
-          <div className="text-6xl">{weatherIcon}</div>
+          <div className="text-5xl sm:text-6xl">{weatherIcon}</div>
         </div>
 
         {/* Température principale */}
         <div className="mb-6">
           <div className="flex items-baseline gap-2">
-            <span className="text-6xl font-bold text-gray-900 dark:text-white">
+            <span className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white">
               {temperature}°
             </span>
             <span className="text-2xl text-gray-600 dark:text-gray-400">C</span>
@@ -116,7 +116,7 @@ const WeatherCard = ({ weatherData }) => {
         </div>
 
         {/* Informations détaillées */}
-        <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
           <div className="flex items-center gap-2">
             <span className="text-2xl">💧</span>
             <div>
@@ -151,7 +151,7 @@ const WeatherCard = ({ weatherData }) => {
 
         {/* Actions */}
         <div className="flex flex-col gap-3">
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             {!isFavorite ? (
               <button
                 onClick={handleAddToFavorites}
@@ -169,7 +169,7 @@ const WeatherCard = ({ weatherData }) => {
             )}
             <button
               onClick={handleViewDetails}
-              className="rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200 text-sm font-semibold px-5 py-3"
+              className="w-full sm:w-auto rounded-full border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200 text-sm font-semibold px-5 py-3"
             >
               Voir details
             </button>
