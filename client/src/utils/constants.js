@@ -1,5 +1,5 @@
 // Configuration de l'API Backend
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = (typeof window !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://localhost:5000/api';
 
 // Configuration de l'API OpenWeatherMap (now handled by backend)
 export const WEATHER_API_KEY = '03cccef598fb7a65c3bc8b8eac673a11'; // À remplacer par votre clé

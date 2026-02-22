@@ -9,22 +9,25 @@ exports.register = async (req, res, next) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({ email, password: hash, name });
 
-    // Don't send password in response
-    const userResponse = {
-      id: user._id,
-      email: user.email,
-      name: user.name
-    };
+    // Create JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d"
+    });
 
     res.status(201).json({ 
       message: "User registered successfully", 
-      user: userResponse 
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name
+      }
     });
   } catch (err) {
     next(err);

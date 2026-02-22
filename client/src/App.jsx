@@ -9,11 +9,15 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import CityDetail from "./pages/CityDetail";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Analytics from "./pages/Analytics";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "./utils/useTheme.jsx";
 import ToastNotifications from "./components/ToastNotifications";
 import { addNotification } from "./features/notifications/notificationsSlice";
 import { markToastReminderSent } from "./features/travelPlans/travelPlansSlice";
+import { logout } from "./features/auth/authSlice";
 
 /**
  * Composant App
@@ -24,6 +28,12 @@ function App() {
   const favoritesCount = useSelector((state) => state.favorites.cities.length);
   const travelPlans = useSelector((state) => state.travelPlans.plans);
   const { isDark, toggleTheme } = useTheme();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     const checkTravelReminders = () => {
@@ -113,6 +123,61 @@ function App() {
                     </span>
                   )}
                 </NavLink>
+                <NavLink
+                  to="/analytics"
+                  className={({ isActive }) =>
+                    `px-4 py-1.5 rounded-full text-sm font-semibold border ${
+                      isActive
+                        ? "text-slate-900 dark:text-slate-100 border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70"
+                        : "text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200"
+                    }`
+                  }
+                >
+                  📊 Analytics
+                </NavLink>
+              </div>
+
+              <div className="flex flex-wrap gap-2 items-center">
+                {isAuthenticated ? (
+                  <>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">
+                      {user?.name || user?.email}
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className="px-4 py-1.5 rounded-full text-sm font-semibold border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    >
+                      Déconnexion
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) =>
+                        `px-4 py-1.5 rounded-full text-sm font-semibold border ${
+                          isActive
+                            ? "text-slate-900 dark:text-slate-100 border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70"
+                            : "text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200"
+                        }`
+                      }
+                    >
+                      Connexion
+                    </NavLink>
+                    <NavLink
+                      to="/signup"
+                      className={({ isActive }) =>
+                        `px-4 py-1.5 rounded-full text-sm font-semibold border ${
+                          isActive
+                            ? "text-slate-900 dark:text-slate-100 border-primary/30 bg-primary/10"
+                            : "text-slate-500 dark:text-slate-400 border-primary/50 text-primary hover:text-primary hover:bg-primary/5"
+                        }`
+                      }
+                    >
+                      S'inscrire
+                    </NavLink>
+                  </>
+                )}
               </div>
 
               {/* Theme Toggle Button */}
@@ -136,6 +201,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/city/:name" element={<CityDetail />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

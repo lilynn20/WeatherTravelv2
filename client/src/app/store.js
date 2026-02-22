@@ -3,6 +3,7 @@ import weatherReducer from '../features/weather/weatherSlice';
 import favoritesReducer from '../features/favorites/favoritesSlice';
 import travelPlansReducer from '../features/travelPlans/travelPlansSlice';
 import notificationsReducer from '../features/notifications/notificationsSlice';
+import authReducer from '../features/auth/authSlice';
 
 /**
  * Configuration du store Redux avec Redux Toolkit
@@ -20,6 +21,7 @@ export const store = configureStore({
     favorites: favoritesReducer,
     travelPlans: travelPlansReducer,
     notifications: notificationsReducer,
+    auth: authReducer,
   },
   // Middleware par défaut de Redux Toolkit inclut redux-thunk
   middleware: (getDefaultMiddleware) =>
