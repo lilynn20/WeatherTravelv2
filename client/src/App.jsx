@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Analytics from "./pages/Analytics";
+import Settings from "./pages/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "./utils/useTheme.jsx";
 import ToastNotifications from "./components/ToastNotifications";
@@ -190,15 +191,41 @@ function App() {
               </div>
 
               {/* Theme Toggle Button */}
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 text-base"
-                aria-label="Toggle theme"
-                title={isDark ? "Basculer en mode clair" : "Basculer en mode sombre"}
-              >
-                {isDark ? '🌙' : '☀️'}
-              </button>
+              <div className="flex items-center gap-2">
+                <NavLink
+                  to="/settings"
+                  className={({ isActive }) =>
+                    `p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 ${
+                      isActive ? "ring-2 ring-slate-300/60 dark:ring-slate-600/60" : ""
+                    }`
+                  }
+                  aria-label="Parametres"
+                  title="Parametres"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1.82v.08a2 2 0 1 1-4 0v-.08A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1.82-.33H2.1a2 2 0 1 1 0-4h.08A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1.82V2.1a2 2 0 1 1 4 0v.08A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.32.45.66.6 1a1.65 1.65 0 0 0 1.82.33h.08a2 2 0 1 1 0 4h-.08a1.65 1.65 0 0 0-1.82.33c-.15.34-.36.68-.6 1z" />
+                  </svg>
+                </NavLink>
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="p-2 rounded-full border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/70 text-slate-700 dark:text-slate-200 text-base"
+                  aria-label="Toggle theme"
+                  title={isDark ? "Basculer en mode clair" : "Basculer en mode sombre"}
+                >
+                  {isDark ? '🌙' : '☀️'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -211,6 +238,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/city/:name" element={<CityDetail />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />

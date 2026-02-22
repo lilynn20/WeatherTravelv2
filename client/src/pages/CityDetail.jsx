@@ -8,6 +8,7 @@ import { addNotification } from '../features/notifications/notificationsSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import { WEATHER_ICONS, API_BASE_URL } from '../utils/constants';
+import { getStoredSettings, getTempUnitLabel, getWindUnitLabel } from '../utils/settings';
 
 /**
  * Page CityDetail
@@ -35,7 +36,10 @@ const CityDetail = () => {
       const fetchAnalyticsForecast = async () => {
         try {
           setForecastLoading(true);
-          const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${name}`);
+          const { units, language } = getStoredSettings();
+          const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${name}`, {
+            params: { units, lang: language },
+          });
           setAnalyticsForecast(response.data.dailyForecasts);
         } catch (err) {
           console.error('Failed to fetch analytics forecast:', err);
@@ -140,6 +144,9 @@ const CityDetail = () => {
 
   const weatherIcon = WEATHER_ICONS[currentWeather.weather[0]?.icon] || '🌤️';
   const dailyForecasts = getDailyForecasts();
+  const { units } = getStoredSettings();
+  const tempUnit = getTempUnitLabel(units);
+  const windUnit = getWindUnitLabel(units);
   
   // Calculate min/max for the next 24 hours from now
   const calculateMinMax = () => {
@@ -200,10 +207,10 @@ const CityDetail = () => {
                     <span className="text-8xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                       {Math.round(currentWeather.main.temp)}°
                     </span>
-                    <span className="text-3xl text-gray-600 dark:text-gray-400">C</span>
+                    <span className="text-3xl text-gray-600 dark:text-gray-400">{tempUnit}</span>
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 mt-3">
-                    🌡️ Ressenti : {Math.round(currentWeather.main.feels_like)}°C
+                    🌡️ Ressenti : {Math.round(currentWeather.main.feels_like)}°{tempUnit}
                   </p>
                 </div>
               </div>
@@ -228,7 +235,7 @@ const CityDetail = () => {
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-lg transition">
                 <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Min / Max</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
-                  {minTemp}° / {maxTemp}°
+                  {minTemp}° / {maxTemp}°{tempUnit}
                 </p>
               </div>
               <div className="bg-cyan-50 dark:bg-cyan-900/20 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800 hover:shadow-lg transition">
@@ -237,7 +244,7 @@ const CityDetail = () => {
               </div>
               <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg border border-teal-200 dark:border-teal-800 hover:shadow-lg transition">
                 <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Vent</p>
-                <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.wind.speed} m/s</p>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.wind.speed} {windUnit}</p>
               </div>
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 hover:shadow-lg transition">
                 <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Pression</p>
@@ -313,7 +320,7 @@ const CityDetail = () => {
                       })}
                     </p>
                     <p className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-2">
-                      {day.temp}°C
+                      {day.temp}°{tempUnit}
                     </p>
                     <p className="text-sm text-slate-700 dark:text-slate-300 capitalize mb-4 font-medium">
                       {day.condition}
@@ -329,7 +336,7 @@ const CityDetail = () => {
                         {day.hourlyData?.[0]?.humidity || 'N/A'}% humidity
                       </span>
                       <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                        {day.hourlyData?.[0]?.windSpeed.toFixed(1) || 'N/A'} m/s wind
+                        {day.hourlyData?.[0]?.windSpeed.toFixed(1) || 'N/A'} {windUnit} wind
                       </span>
                     </div>
                   </div>

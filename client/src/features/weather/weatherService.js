@@ -12,6 +12,22 @@ class WeatherService {
     });
   }
 
+  getSettings() {
+    const stored = typeof window !== "undefined" ? window.localStorage.getItem("weathertravel_settings") : null;
+    if (!stored) {
+      return { units: "metric", language: "fr" };
+    }
+    try {
+      const parsed = JSON.parse(stored);
+      return {
+        units: parsed.units || "metric",
+        language: parsed.language || "fr",
+      };
+    } catch {
+      return { units: "metric", language: "fr" };
+    }
+  }
+
   /**
    * Récupère la météo actuelle pour une ville
    * @param {string} cityName - Nom de la ville
@@ -19,7 +35,10 @@ class WeatherService {
    */
   async getCurrentWeather(cityName) {
     try {
-      const response = await this.api.get(`/weather/${encodeURIComponent(cityName)}`);
+      const settings = this.getSettings();
+      const response = await this.api.get(`/weather/${encodeURIComponent(cityName)}`, {
+        params: { units: settings.units, lang: settings.language },
+      });
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -33,7 +52,10 @@ class WeatherService {
    */
   async getForecast(cityName) {
     try {
-      const response = await this.api.get(`/analytics/forecast/${encodeURIComponent(cityName)}`);
+      const settings = this.getSettings();
+      const response = await this.api.get(`/analytics/forecast/${encodeURIComponent(cityName)}`, {
+        params: { units: settings.units, lang: settings.language },
+      });
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -48,9 +70,12 @@ class WeatherService {
    */
   async getWeatherByCoords(lat, lon) {
     try {
+      const settings = this.getSettings();
       // Note: Cette fonction utilise les données du service frontend
       // Pour une meilleure intégration, considérez l'ajout d'un endpoint backend pour les coordonnées
-      const response = await this.api.get(`/weather?lat=${lat}&lon=${lon}`);
+      const response = await this.api.get(`/weather`, {
+        params: { lat, lon, units: settings.units, lang: settings.language },
+      });
       return response.data;
     } catch (error) {
       throw this.handleError(error);

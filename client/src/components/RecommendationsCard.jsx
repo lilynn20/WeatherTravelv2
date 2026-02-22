@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
+import { getStoredSettings, getTempUnitLabel } from '../utils/settings';
 import LoadingSpinner from './LoadingSpinner';
 
 const RecommendationsCard = ({ city }) => {
@@ -21,8 +22,10 @@ const RecommendationsCard = ({ city }) => {
     setLoading(true);
     setError(null);
     try {
+      const { units, language } = getStoredSettings();
       const response = await axios.get(
-        `${API_BASE_URL}/analytics/nearby-cities/${encodeURIComponent(city)}`
+        `${API_BASE_URL}/analytics/nearby-cities/${encodeURIComponent(city)}`,
+        { params: { units, lang: language } }
       );
       // Map API response to expected format
       const mapped = (response.data.nearestCities || []).map((rec) => ({
@@ -45,6 +48,8 @@ const RecommendationsCard = ({ city }) => {
   };
 
   if (loading) return <LoadingSpinner />;
+  const { units } = getStoredSettings();
+  const tempUnit = getTempUnitLabel(units);
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
@@ -84,7 +89,7 @@ const RecommendationsCard = ({ city }) => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500 dark:text-slate-400">Temp:</span>
-                  <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.temp}°C</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.temp}°{tempUnit}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500 dark:text-slate-400">Humidity:</span>

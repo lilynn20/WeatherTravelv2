@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
+import { getStoredSettings, getTempUnitLabel } from '../utils/settings';
 import LoadingSpinner from './LoadingSpinner';
 
 const ForecastScoresCard = ({ city }) => {
@@ -19,7 +20,10 @@ const ForecastScoresCard = ({ city }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${encodeURIComponent(city)}`);
+      const { units, language } = getStoredSettings();
+      const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${encodeURIComponent(city)}`, {
+        params: { units, lang: language },
+      });
       // Map API response to expected format
       setForecast({
         forecast: response.data.dailyForecasts.map((day) => {
@@ -63,6 +67,8 @@ const ForecastScoresCard = ({ city }) => {
   };
 
   if (!city) return null;
+  const { units } = getStoredSettings();
+  const tempUnit = getTempUnitLabel(units);
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -112,7 +118,7 @@ const ForecastScoresCard = ({ city }) => {
                 <div className="flex justify-between">
                   <span className="text-slate-600 dark:text-slate-400">Temp:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">
-                    {day.temp}°C
+                    {day.temp}°{tempUnit}
                   </span>
                 </div>
                 <div className="flex justify-between">

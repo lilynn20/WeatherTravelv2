@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { addFavorite, selectIsFavorite } from '../features/favorites/favoritesSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
 import { WEATHER_ICONS } from '../utils/constants';
+import { getStoredSettings, getTempUnitLabel, getWindUnitLabel } from '../utils/settings';
 import TravelDateModal from './TravelDateModal';
 
 /**
@@ -32,6 +33,9 @@ const WeatherCard = ({ weatherData }) => {
   } = weatherData;
 
   const weatherIcon = WEATHER_ICONS[weather[0]?.icon] || '🌤️';
+  const { units } = getStoredSettings();
+  const tempUnit = getTempUnitLabel(units);
+  const windUnit = getWindUnitLabel(units);
   const temperature = Math.round(main.temp);
   const feelsLike = Math.round(main.feels_like);
 
@@ -102,10 +106,10 @@ const WeatherCard = ({ weatherData }) => {
             <span className="text-6xl sm:text-7xl font-bold bg-gradient-to-br from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               {temperature}°
             </span>
-            <span className="text-2xl text-gray-600 dark:text-gray-400">C</span>
+            <span className="text-2xl text-gray-600 dark:text-gray-400">{tempUnit}</span>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-3">
-            Ressenti : {feelsLike}°C
+            Ressenti : {feelsLike}°{tempUnit}
           </p>
         </div>
 
@@ -117,11 +121,11 @@ const WeatherCard = ({ weatherData }) => {
           </div>
           <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200 dark:border-teal-800 text-center hover:bg-teal-100 dark:hover:bg-teal-900/30 transition">
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Vent</p>
-            <p className="font-bold text-gray-900 dark:text-white text-sm">{wind.speed} m/s</p>
+            <p className="font-bold text-gray-900 dark:text-white text-sm">{wind.speed} {windUnit}</p>
           </div>
           <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200 dark:border-amber-800 text-center hover:bg-amber-100 dark:hover:bg-amber-900/30 transition">
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Min/Max</p>
-            <p className="font-bold text-gray-900 dark:text-white text-sm">{Math.round(main.temp_min)}°/{Math.round(main.temp_max)}°</p>
+            <p className="font-bold text-gray-900 dark:text-white text-sm">{Math.round(main.temp_min)}°/{Math.round(main.temp_max)}°{tempUnit}</p>
           </div>
           <div className="bg-rose-50 dark:bg-rose-900/20 p-3 rounded-lg border border-rose-200 dark:border-rose-800 text-center hover:bg-rose-100 dark:hover:bg-rose-900/30 transition">
             <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Pression</p>

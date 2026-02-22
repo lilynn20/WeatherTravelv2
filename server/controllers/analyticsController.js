@@ -237,14 +237,16 @@ exports.getPackingChecklist = async (req, res, next) => {
 exports.getForecast = async (req, res, next) => {
   try {
     const { city } = req.params;
+    const units = req.query.units || "metric";
+    const lang = req.query.lang || "fr";
 
     // Fetch BOTH current weather and forecast for accurate real-time data
     const [weatherResponse, forecastResponse] = await Promise.all([
       axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=${units}&lang=${lang}`
       ),
       axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=${units}&lang=${lang}`
       )
     ]);
 
@@ -339,6 +341,8 @@ exports.getForecast = async (req, res, next) => {
 exports.getNearestCities = async (req, res, next) => {
   try {
     const { city } = req.params;
+    const units = req.query.units || "metric";
+    const lang = req.query.lang || "fr";
 
     // Get current weather and coordinates of the searched city
     const cityWeatherResponse = await axios.get(
@@ -353,7 +357,7 @@ exports.getNearestCities = async (req, res, next) => {
     let nearestCities = [];
     try {
       const nearbyResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/find?lat=${centerLat}&lon=${centerLon}&cnt=30&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/find?lat=${centerLat}&lon=${centerLon}&cnt=30&appid=${process.env.WEATHER_API_KEY}&units=${units}&lang=${lang}`
       );
 
       const nearbyList = nearbyResponse.data.list || [];
@@ -482,7 +486,7 @@ exports.getNearestCities = async (req, res, next) => {
       nearbyWithDistance.map(async (c) => {
         try {
           const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(c.name)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(c.name)}&appid=${process.env.WEATHER_API_KEY}&units=${units}&lang=${lang}`
           );
           const weatherData = response.data;
           const score = recommendationService.calculateTravelScore(weatherData);

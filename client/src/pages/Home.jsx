@@ -119,7 +119,7 @@ const Home = () => {
             </p>
           </div>
           <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
-
+            <div className="text-4xl mb-3">⭐</div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Epinglez
             </h4>
@@ -128,7 +128,7 @@ const Home = () => {
             </p>
           </div>
           <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
-
+            <div className="text-4xl mb-3">✈️</div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Voyagez
             </h4>

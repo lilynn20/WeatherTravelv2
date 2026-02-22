@@ -11,20 +11,20 @@ const normalizeName = (value) =>
 
 router.get("/", async (req, res, next) => {
   try {
-    const { lat, lon } = req.query;
+    const { lat, lon, units, lang } = req.query;
 
     if (!lat || !lon) {
       return res.status(400).json({ error: "Latitude and longitude are required" });
     }
 
-    const cacheKey = `coords_${lat}_${lon}`;
+    const cacheKey = `coords_${lat}_${lon}_${units || "metric"}_${lang || "fr"}`;
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json({ ...cachedData, cached: true });
     }
 
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
     );
 
     cache.set(cacheKey, response.data);
@@ -43,9 +43,11 @@ router.get("/", async (req, res, next) => {
 router.get("/:city", async (req, res, next) => {
   try {
     const { city } = req.params;
+    const { units, lang } = req.query;
     
     // Check cache first
-    const cachedData = cache.get(city);
+    const cacheKey = `city_${city}_${units || "metric"}_${lang || "fr"}`;
+    const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json({ ...cachedData, cached: true });
     }
@@ -53,7 +55,7 @@ router.get("/:city", async (req, res, next) => {
     let response;
     try {
       response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
       );
     } catch (err) {
       // Fallback: try geocoding or fuzzy search for small/ambiguous city names
@@ -90,7 +92,7 @@ router.get("/:city", async (req, res, next) => {
         if (chosen && bestScore > 0) {
           const { lat, lon } = chosen;
           response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
           );
         } else {
           const findResponse = await axios.get(
@@ -104,7 +106,7 @@ router.get("/:city", async (req, res, next) => {
           const bestFind = findList.find(item => scoreCandidate(item.name) >= 2) || findList[0];
           const { lat, lon } = bestFind.coord;
           response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
           );
         }
       } else {
@@ -113,7 +115,7 @@ router.get("/:city", async (req, res, next) => {
     }
 
     // Store in cache
-    cache.set(city, response.data);
+    cache.set(cacheKey, response.data);
 
     res.json(response.data);
   } catch (err) {
