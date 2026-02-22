@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen text-slate-900;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    background-color: #ffffff;
+    background-image:
+      radial-gradient(320px circle at 14% 8%, rgba(250, 204, 21, 0.32), transparent 60%),
+      radial-gradient(260px circle at 82% 12%, rgba(196, 181, 253, 0.18), transparent 65%),
+      radial-gradient(320px circle at 50% 90%, rgba(125, 211, 252, 0.18), transparent 65%);
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  .dark body {
+    @apply text-slate-100;
+    background-color: #0b0f1a;
+    background-image:
+      radial-gradient(320px circle at 14% 8%, rgba(250, 204, 21, 0.22), transparent 60%),
+      radial-gradient(260px circle at 82% 12%, rgba(196, 181, 253, 0.14), transparent 65%),
+      radial-gradient(320px circle at 50% 90%, rgba(125, 211, 252, 0.14), transparent 65%);
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-md shadow-lg p-6;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-full font-semibold shadow-sm hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-full font-medium border border-slate-200/70 dark:border-slate-700/60 hover:bg-white/90 dark:hover:bg-slate-900/80;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white px-4 py-2 rounded-full font-medium hover:bg-red-600;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-slate-200/70 dark:border-slate-700/60 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-transparent bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100;
+  }
+}
+
+@layer components {
+  .brand-script {
+    font-family: "Caveat", "Manrope", "Segoe UI", sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .accent-dot {
+    @apply inline-block h-2 w-2 rounded-full;
+  }
+}
+
+@layer utilities {
+  /* Animation pour le modal */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes toastFade {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    12% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    85% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-toast {
+    animation: toastFade 3s ease-in-out both;
+  }
+}
