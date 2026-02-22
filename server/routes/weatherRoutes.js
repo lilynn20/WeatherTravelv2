@@ -1,131 +1,19 @@
 const router = require("express").Router();
-const axios = require("axios");
-const cache = require("../services/cacheService");
+const weatherController = require("../controllers/weatherController");
 
-const normalizeName = (value) =>
-  value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
+// Weather compare endpoint
+router.get("/compare", weatherController.compareWeather);
 
-router.get("/", async (req, res, next) => {
-  try {
-    const { lat, lon, units, lang } = req.query;
+// Weather alerts endpoint
+router.get("/alerts/:city", weatherController.getAlerts);
 
-    if (!lat || !lon) {
-      return res.status(400).json({ error: "Latitude and longitude are required" });
-    }
+// Weather by coordinates
+router.get("/", weatherController.getWeatherByCoords);
 
-    const cacheKey = `coords_${lat}_${lon}_${units || "metric"}_${lang || "fr"}`;
-    const cachedData = cache.get(cacheKey);
-    if (cachedData) {
-      return res.json({ ...cachedData, cached: true });
-    }
+// Weather forecast by city
+router.get("/forecast/:city", weatherController.getForecastByCity);
 
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
-    );
-
-    cache.set(cacheKey, response.data);
-
-    res.json(response.data);
-  } catch (err) {
-    if (err.response) {
-      return res.status(err.response.status).json({
-        error: err.response.data.message || "Weather data not found"
-      });
-    }
-    next(err);
-  }
-});
-
-router.get("/:city", async (req, res, next) => {
-  try {
-    const { city } = req.params;
-    const { units, lang } = req.query;
-    
-    // Check cache first
-    const cacheKey = `city_${city}_${units || "metric"}_${lang || "fr"}`;
-    const cachedData = cache.get(cacheKey);
-    if (cachedData) {
-      return res.json({ ...cachedData, cached: true });
-    }
-
-    let response;
-    try {
-      response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
-      );
-    } catch (err) {
-      // Fallback: try geocoding or fuzzy search for small/ambiguous city names
-      if (err.response && err.response.status === 404) {
-        const geoResponse = await axios.get(
-          `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=5&appid=${process.env.WEATHER_API_KEY}`
-        );
-        const geoResults = geoResponse.data || [];
-        const normalizedQuery = normalizeName(city);
-        const queryTokens = normalizedQuery.split(/\s+/).filter(Boolean);
-
-        const scoreCandidate = (value) => {
-          if (!value) return 0;
-          const normalized = normalizeName(value);
-          if (normalized === normalizedQuery) return 3;
-          if (queryTokens.length > 0 && queryTokens.every(token => normalized.includes(token))) return 2;
-          if (normalized.includes(normalizedQuery)) return 1;
-          return 0;
-        };
-
-        let chosen = null;
-        let bestScore = -1;
-
-        geoResults.forEach((result) => {
-          const localNames = result.local_names ? Object.values(result.local_names) : [];
-          const candidates = [result.name, ...localNames];
-          const score = Math.max(...candidates.map(scoreCandidate));
-          if (score > bestScore) {
-            bestScore = score;
-            chosen = result;
-          }
-        });
-
-        if (chosen && bestScore > 0) {
-          const { lat, lon } = chosen;
-          response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
-          );
-        } else {
-          const findResponse = await axios.get(
-            `https://api.openweathermap.org/data/2.5/find?q=${encodeURIComponent(city)}&type=like&sort=population&cnt=5&appid=${process.env.WEATHER_API_KEY}&units=metric`
-          );
-          const findList = findResponse.data?.list || [];
-          if (findList.length === 0) {
-            return res.status(404).json({ error: "City not found" });
-          }
-
-          const bestFind = findList.find(item => scoreCandidate(item.name) >= 2) || findList[0];
-          const { lat, lon } = bestFind.coord;
-          response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${units || "metric"}&lang=${lang || "fr"}`
-          );
-        }
-      } else {
-        throw err;
-      }
-    }
-
-    // Store in cache
-    cache.set(cacheKey, response.data);
-
-    res.json(response.data);
-  } catch (err) {
-    if (err.response) {
-      return res.status(err.response.status).json({ 
-        error: err.response.data.message || "Weather data not found" 
-      });
-    }
-    next(err);
-  }
-});
+// Weather by city name
+router.get("/:city", weatherController.getWeatherByCity);
 
 module.exports = router;

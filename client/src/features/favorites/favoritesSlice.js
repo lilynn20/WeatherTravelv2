@@ -46,9 +46,6 @@ export const removeFavorite = createAsyncThunk(
   }
 );
 
-/**
- * État initial du slice favoris
- */
 const initialState = {
   cities: [],
   loading: false,

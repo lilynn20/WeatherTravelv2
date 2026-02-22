@@ -13,6 +13,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import SharedTrip from "./pages/SharedTrip";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "./utils/useTheme.jsx";
 import { t } from "./utils/i18n";
@@ -21,6 +25,9 @@ import { addNotification } from "./features/notifications/notificationsSlice";
 import { markToastReminderSent } from "./features/travelPlans/travelPlansSlice";
 import { logout } from "./features/auth/authSlice";
 import { fetchFavorites } from "./features/favorites/favoritesSlice";
+import { fetchTrips } from "./features/travelPlans/tripsSlice";
+import axios from "axios";
+import { API_BASE_URL } from "./utils/constants";
 
 /**
  * Composant App
@@ -34,14 +41,28 @@ function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  // Restore session from httpOnly cookie on page load
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/auth/me`, { withCredentials: true });
+        if (res.data?.user) {
+          dispatch({ type: "auth/login/fulfilled", payload: { user: res.data.user } });
+        }
+      } catch {
+        // Not authenticated — that's OK
+      }
+    };
+    restoreSession();
+  }, [dispatch]);
 
-  // Fetch favorites when user is authenticated
+  const handleLogout = () => dispatch(logout());
+
+  // Fetch server data when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchFavorites());
+      dispatch(fetchTrips());
     }
   }, [isAuthenticated, dispatch]);
 
@@ -84,7 +105,8 @@ function App() {
 
   return (
     <Router>
-      <ToastNotifications />
+      <ErrorBoundary>
+        <ToastNotifications />
       {/* Navigation */}
       <nav className="sticky top-4 z-50 px-3 sm:px-4">
         <div className="max-w-6xl mx-auto">
@@ -233,40 +255,44 @@ function App() {
         </div>
       </nav>
 
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/city/:name" element={<CityDetail />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+        {/* Routes */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/city/:name" element={<CityDetail />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/trip/shared/:token" element={<SharedTrip />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
 
-      {/* Footer */}
-      <footer className="mt-16 px-4">
-        <div className="max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-700/60 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-slate-500 dark:text-slate-400 text-sm">
-              {t('footer_copy')}
-            </div>
-            <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
-              <a
-                href="https://openweathermap.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-slate-700 dark:hover:text-slate-200"
-              >
-                {t('footer_powered')}
-              </a>
-              <span>|</span>
-              <span>{t('footer_made_with')}</span>
+        {/* Footer */}
+        <footer className="mt-16 px-4">
+          <div className="max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-700/60 py-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="text-slate-500 dark:text-slate-400 text-sm">
+                {t('footer_copy')}
+              </div>
+              <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
+                <a
+                  href="https://openweathermap.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-slate-700 dark:hover:text-slate-200"
+                >
+                  {t('footer_powered')}
+                </a>
+                <span>|</span>
+                <span>{t('footer_made_with')}</span>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </ErrorBoundary>
     </Router>
   );
 }

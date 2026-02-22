@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import weatherReducer from '../features/weather/weatherSlice';
 import favoritesReducer from '../features/favorites/favoritesSlice';
 import travelPlansReducer from '../features/travelPlans/travelPlansSlice';
+import tripsReducer from '../features/travelPlans/tripsSlice';
 import notificationsReducer from '../features/notifications/notificationsSlice';
 import authReducer from '../features/auth/authSlice';
 
@@ -19,7 +20,8 @@ export const store = configureStore({
   reducer: {
     weather: weatherReducer,
     favorites: favoritesReducer,
-    travelPlans: travelPlansReducer,
+    travelPlans: travelPlansReducer, // localStorage-based local plans (kept for offline)
+    trips: tripsReducer,             // server-synced trips
     notifications: notificationsReducer,
     auth: authReducer,
   },
@@ -34,18 +36,14 @@ export const store = configureStore({
           'favorites/removeFavorite/fulfilled',
           'travelPlans/addTravelPlan',
           'travelPlans/scheduleEmailReminder/fulfilled',
+          'trips/createTrip/fulfilled',
+          'trips/fetchTrips/fulfilled',
         ],
-        ignoredPaths: ['favorites.cities', 'travelPlans.plans'],
+        ignoredPaths: ['favorites.cities', 'travelPlans.plans', 'trips.trips'],
       },
     }),
   // Activer Redux DevTools en développement pour un meilleur débogage
-  devTools: {
-    actionSanitizer: (action) => ({
-      ...action,
-      type: action.type,
-    }),
-    stateSanitizer: (state) => state,
-  },
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;
