@@ -10,6 +10,7 @@ import { ERROR_MESSAGES } from '../utils/constants';
 const SearchForm = ({ onSearch, loading = false }) => {
   const [cityName, setCityName] = useState('');
   const [error, setError] = useState('');
+  const [geoLoading, setGeoLoading] = useState(false);
 
   /**
    * Gère la soumission du formulaire
@@ -49,14 +50,17 @@ const SearchForm = ({ onSearch, loading = false }) => {
    */
   const handleGeolocation = () => {
     if ('geolocation' in navigator) {
+      setGeoLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          setGeoLoading(false);
           onSearch(null, {
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           });
         },
         (error) => {
+          setGeoLoading(false);
           setError('Impossible d\'accéder à votre position.');
         }
       );
@@ -117,10 +121,10 @@ const SearchForm = ({ onSearch, loading = false }) => {
         <button
           type="button"
           onClick={handleGeolocation}
-          disabled={loading}
+          disabled={loading || geoLoading}
           className="btn-secondary text-sm self-start"
         >
-          📍 Utiliser ma position
+          {geoLoading ? 'Localisation...' : '📍 Utiliser ma position'}
         </button>
       </div>
     </form>

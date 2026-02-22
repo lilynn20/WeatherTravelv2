@@ -22,7 +22,7 @@ const RecommendationsCard = ({ city }) => {
     setError(null);
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/analytics/nearby-cities/${city}`
+        `${API_BASE_URL}/analytics/nearby-cities/${encodeURIComponent(city)}`
       );
       // Map API response to expected format
       const mapped = (response.data.nearestCities || []).map((rec) => ({

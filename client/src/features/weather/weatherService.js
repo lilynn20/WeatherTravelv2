@@ -19,7 +19,7 @@ class WeatherService {
    */
   async getCurrentWeather(cityName) {
     try {
-      const response = await this.api.get(`/weather/${cityName}`);
+      const response = await this.api.get(`/weather/${encodeURIComponent(cityName)}`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -33,7 +33,7 @@ class WeatherService {
    */
   async getForecast(cityName) {
     try {
-      const response = await this.api.get(`/analytics/forecast/${cityName}`);
+      const response = await this.api.get(`/analytics/forecast/${encodeURIComponent(cityName)}`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);

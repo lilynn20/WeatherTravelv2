@@ -19,7 +19,7 @@ const ForecastScoresCard = ({ city }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${city}`);
+      const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${encodeURIComponent(city)}`);
       // Map API response to expected format
       setForecast({
         forecast: response.data.dailyForecasts.map((day) => {

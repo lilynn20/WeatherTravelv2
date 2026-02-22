@@ -45,7 +45,7 @@ exports.getDetailedAnalysis = async (req, res, next) => {
 
     // Fetch weather data
     const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
     );
 
     const weatherData = weatherResponse.data;
@@ -130,7 +130,7 @@ exports.getPackingList = async (req, res, next) => {
 
     // Fetch weather data
     const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
     );
 
     let packingList = packingService.generatePackingList(
@@ -178,7 +178,7 @@ exports.getMinimalPackingList = async (req, res, next) => {
     const duration = parseInt(req.query.duration) || 3;
 
     const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
     );
 
     const packingList = packingService.generateMinimalList(
@@ -211,7 +211,7 @@ exports.getPackingChecklist = async (req, res, next) => {
     };
 
     const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
     );
 
     const packingList = packingService.generatePackingList(
@@ -241,10 +241,10 @@ exports.getForecast = async (req, res, next) => {
     // Fetch BOTH current weather and forecast for accurate real-time data
     const [weatherResponse, forecastResponse] = await Promise.all([
       axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
       ),
       axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
       )
     ]);
 
@@ -342,7 +342,7 @@ exports.getNearestCities = async (req, res, next) => {
 
     // Get current weather and coordinates of the searched city
     const cityWeatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
     );
 
     const cityData = cityWeatherResponse.data;
@@ -482,7 +482,7 @@ exports.getNearestCities = async (req, res, next) => {
       nearbyWithDistance.map(async (c) => {
         try {
           const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${c.name}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(c.name)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
           );
           const weatherData = response.data;
           const score = recommendationService.calculateTravelScore(weatherData);
