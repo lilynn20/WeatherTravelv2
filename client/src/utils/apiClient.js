@@ -10,6 +10,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Send cookies with requests
 });
 
 /**
@@ -17,11 +18,7 @@ const apiClient = axios.create({
  */
 apiClient.interceptors.request.use(
   (config) => {
-    // Add JWT token if available
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = token;
-    }
+    // Cookies are sent automatically via withCredentials: true
     return config;
   },
   (error) => {

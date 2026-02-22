@@ -3,17 +3,25 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../utils/constants';
 
 /**
+ * Create axios instance with credentials for cookie-based auth
+ */
+const authApi = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+});
+
+/**
  * Thunk pour la connexion
  */
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+      const response = await authApi.post('/auth/login', {
         email,
         password,
       });
-      localStorage.setItem('token', response.data.token);
+      // Cookie is set automatically by server
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -28,12 +36,12 @@ export const signup = createAsyncThunk(
   'auth/signup',
   async ({ email, password, name }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/register`, {
+      const response = await authApi.post('/auth/register', {
         email,
         password,
         name,
       });
-      localStorage.setItem('token', response.data.token);
+      // Cookie is set automatically by server
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Signup failed');
@@ -41,24 +49,32 @@ export const signup = createAsyncThunk(
   }
 );
 
+/**
+ * Thunk pour la déconnexion
+ */
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await authApi.post('/auth/logout');
+      return null;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Logout failed');
+    }
+  }
+);
+
 const initialState = {
   user: null,
-  token: localStorage.getItem('token') || null,
   loading: false,
   error: null,
-  isAuthenticated: !!localStorage.getItem('token'),
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      localStorage.removeItem('token');
-    },
     clearError: (state) => {
       state.error = null;
     },
@@ -73,7 +89,6 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state, action) => {
@@ -89,16 +104,29 @@ const authSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.isAuthenticated = true;
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         state.isAuthenticated = false;
+      })
+      // Logout
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
