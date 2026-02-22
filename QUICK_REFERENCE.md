@@ -207,7 +207,7 @@ docker-compose up -d --build
 
 ---
 
-## 📊 Scoring Algorithm
+##  Scoring Algorithm
 
 ### Travel Score Components
 - **Temperature** (35%): Compared to user preferences

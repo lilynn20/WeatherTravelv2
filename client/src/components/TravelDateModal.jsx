@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTravelPlan, scheduleEmailReminder, resetEmailStatus } from '../features/travelPlans/travelPlansSlice';
-import { addCity, selectIsFavorite } from '../features/favorites/favoritesSlice';
+import { addFavorite, selectIsFavorite } from '../features/favorites/favoritesSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
 
 /**
@@ -93,18 +93,7 @@ const TravelDateModal = ({ isOpen, onClose, cityData }) => {
 
     // NOUVEAU: Ajouter automatiquement la ville aux favoris si elle n'y est pas déjà
     if (!isFavorite) {
-      const cityDataForFavorites = {
-        id: cityData.id,
-        name: cityData.name,
-        country: cityData.country || '',
-        temp: cityData.weather?.temp || 0,
-        weather: cityData.weather?.main || 'Unknown',
-        description: cityData.weather?.description || '',
-        icon: cityData.weather?.icon || '01d',
-        humidity: cityData.weather?.humidity || 0,
-        windSpeed: cityData.weather?.windSpeed || 0,
-      };
-      dispatch(addCity(cityDataForFavorites));
+      dispatch(addFavorite(cityData.name));
       dispatch(
         addNotification({
           message: `${cityData.name} ajoutée aux destinations avec succès.`,

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCurrentWeather, fetchForecast } from '../features/weather/weatherSlice';
-import { addCity, selectIsFavorite } from '../features/favorites/favoritesSlice';
+import { addFavorite, selectIsFavorite } from '../features/favorites/favoritesSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
@@ -35,18 +35,7 @@ const CityDetail = () => {
    */
   const handleAddToFavorites = () => {
     if (currentWeather) {
-      const cityData = {
-        id: currentWeather.id,
-        name: currentWeather.name,
-        country: currentWeather.sys.country,
-        temp: Math.round(currentWeather.main.temp),
-        weather: currentWeather.weather[0].main,
-        description: currentWeather.weather[0].description,
-        icon: currentWeather.weather[0].icon,
-        humidity: currentWeather.main.humidity,
-        windSpeed: currentWeather.wind.speed,
-      };
-      dispatch(addCity(cityData));
+      dispatch(addFavorite(currentWeather.name));
       dispatch(
         addNotification({
           message: `${currentWeather.name} ajoutée aux destinations avec succès.`,

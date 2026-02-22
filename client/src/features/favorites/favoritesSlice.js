@@ -1,38 +1,58 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import apiClient from '../../utils/apiClient';
 
 /**
- * Clé pour le localStorage
+ * Thunk pour récupérer tous les favoris de l'utilisateur
  */
-const FAVORITES_STORAGE_KEY = 'weathertravel_favorites';
-
-/**
- * Récupère les favoris depuis le localStorage
- */
-const loadFavoritesFromStorage = () => {
-  try {
-    const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    return [];
+export const fetchFavorites = createAsyncThunk(
+  'favorites/fetchFavorites',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get('/favorites');
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch favorites');
+    }
   }
-};
+);
 
 /**
- * Sauvegarde les favoris dans le localStorage
+ * Thunk pour ajouter une ville aux favoris
  */
-const saveFavoritesToStorage = (favorites) => {
-  try {
-    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  } catch (error) {
-    // Silently fail if storage is unavailable
+export const addFavorite = createAsyncThunk(
+  'favorites/addFavorite',
+  async (city, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post('/favorites', { city });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Failed to add favorite');
+    }
   }
-};
+);
+
+/**
+ * Thunk pour supprimer une ville des favoris
+ */
+export const removeFavorite = createAsyncThunk(
+  'favorites/removeFavorite',
+  async (favoriteId, { rejectWithValue }) => {
+    try {
+      await apiClient.delete(`/favorites/${favoriteId}`);
+      return favoriteId;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Failed to remove favorite');
+    }
+  }
+);
 
 /**
  * État initial du slice favoris
  */
 const initialState = {
-  cities: loadFavoritesFromStorage(),
+  cities: [],
+  loading: false,
+  error: null,
 };
 
 /**
@@ -43,80 +63,69 @@ const favoritesSlice = createSlice({
   initialState,
   reducers: {
     /**
-     * Ajoute une ville aux favoris
-     * @param {Object} action.payload - Données de la ville (id, name, country, temp, weather, etc.)
-     */
-    addCity: (state, action) => {
-      const cityData = action.payload;
-      
-      // Vérifie si la ville n'est pas déjà dans les favoris
-      const exists = state.cities.find(city => city.id === cityData.id);
-      
-      if (!exists) {
-        const newCity = {
-          id: cityData.id,
-          name: cityData.name,
-          country: cityData.country,
-          temp: cityData.temp,
-          weather: cityData.weather,
-          description: cityData.description,
-          icon: cityData.icon,
-          humidity: cityData.humidity,
-          windSpeed: cityData.windSpeed,
-          addedAt: new Date().toISOString(),
-        };
-        
-        state.cities.push(newCity);
-        saveFavoritesToStorage(state.cities);
-      }
-    },
-
-    /**
-     * Supprime une ville des favoris
-     * @param {number} action.payload - ID de la ville à supprimer
-     */
-    removeCity: (state, action) => {
-      state.cities = state.cities.filter(city => city.id !== action.payload);
-      saveFavoritesToStorage(state.cities);
-    },
-
-    /**
-     * Met à jour les données météo d'une ville favorite
-     * @param {Object} action.payload - Nouvelles données météo
-     */
-    updateCityWeather: (state, action) => {
-      const { id, temp, weather, description, icon, humidity, windSpeed } = action.payload;
-      const city = state.cities.find(c => c.id === id);
-      
-      if (city) {
-        city.temp = temp;
-        city.weather = weather;
-        city.description = description;
-        city.icon = icon;
-        city.humidity = humidity;
-        city.windSpeed = windSpeed;
-        city.updatedAt = new Date().toISOString();
-        saveFavoritesToStorage(state.cities);
-      }
-    },
-
-    /**
-     * Efface tous les favoris
+     * Efface tous les favoris localement
      */
     clearAllFavorites: (state) => {
       state.cities = [];
-      saveFavoritesToStorage([]);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Fetch Favorites
+      .addCase(fetchFavorites.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchFavorites.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cities = action.payload.map(fav => ({
+          id: fav._id,
+          name: fav.city,
+          addedAt: fav.addedAt,
+        }));
+      })
+      .addCase(fetchFavorites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      // Add Favorite
+      .addCase(addFavorite.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        state.cities.push({
+          id: action.payload._id,
+          name: action.payload.city,
+          addedAt: action.payload.addedAt,
+        });
+      })
+      .addCase(addFavorite.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      
+      // Remove Favorite
+      .addCase(removeFavorite.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(removeFavorite.fulfilled, (state, action) => {
+        state.cities = state.cities.filter(city => city.id !== action.payload);
+      })
+      .addCase(removeFavorite.rejected, (state, action) => {
+        state.error = action.payload;
+      });
   },
 });
 
-export const { addCity, removeCity, updateCityWeather, clearAllFavorites } = favoritesSlice.actions;
+export const { clearAllFavorites } = favoritesSlice.actions;
 
 // Sélecteurs
 export const selectAllFavorites = (state) => state.favorites.cities;
-export const selectFavoriteById = (state, cityId) => 
-  state.favorites.cities.find(city => city.id === cityId);
-export const selectIsFavorite = (state, cityId) => 
-  state.favorites.cities.some(city => city.id === cityId);
+export const selectFavoritesLoading = (state) => state.favorites.loading;
+export const selectFavoritesError = (state) => state.favorites.error;
+export const selectFavoriteById = (state, favoriteId) => 
+  state.favorites.cities.find(city => city.id === favoriteId);
+export const selectIsFavorite = (state, cityName) => 
+  state.favorites.cities.some(city => city.name.toLowerCase() === cityName.toLowerCase());
 
 export default favoritesSlice.reducer;

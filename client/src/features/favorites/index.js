@@ -4,14 +4,16 @@
  */
 
 export {
-  addCity,
-  removeCity,
-  updateCityWeather,
+  fetchFavorites,
+  addFavorite,
+  removeFavorite,
   clearAllFavorites,
 } from './favoritesSlice';
 
 export {
   selectAllFavorites,
+  selectFavoritesLoading,
+  selectFavoritesError,
   selectFavoriteById,
   selectIsFavorite,
 } from './favoritesSlice';

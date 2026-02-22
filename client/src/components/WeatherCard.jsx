@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addCity, selectIsFavorite } from '../features/favorites/favoritesSlice';
+import { addFavorite, selectIsFavorite } from '../features/favorites/favoritesSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
 import { WEATHER_ICONS } from '../utils/constants';
 import TravelDateModal from './TravelDateModal';
@@ -39,18 +39,7 @@ const WeatherCard = ({ weatherData }) => {
    * Ajoute la ville aux favoris
    */
   const handleAddToFavorites = () => {
-    const cityData = {
-      id,
-      name,
-      country: sys.country,
-      temp: temperature,
-      weather: weather[0].main,
-      description: weather[0].description,
-      icon: weather[0].icon,
-      humidity: main.humidity,
-      windSpeed: wind.speed,
-    };
-    dispatch(addCity(cityData));
+    dispatch(addFavorite(name));
     dispatch(
       addNotification({
         message: `${name} ajoutée aux destinations avec succès.`,

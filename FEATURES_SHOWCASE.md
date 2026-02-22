@@ -91,7 +91,7 @@ GET /api/analytics/compare?cities=Paris,London,Rome,Barcelona
 
 ---
 
-## 2. 📊 Comprehensive Forecast Scoring Algorithm
+## 2. Comprehensive Forecast Scoring Algorithm
 
 ### Overview
 Advanced weather analysis system that evaluates travel conditions across multiple dimensions.
@@ -480,7 +480,7 @@ Level 2: Redis (Optional)
 
 ---
 
-## 📊 Technology Comparison
+## Technology Comparison
 
 ### Why This Stack?
 

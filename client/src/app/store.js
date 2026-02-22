@@ -29,8 +29,9 @@ export const store = configureStore({
       serializableCheck: {
         // Ignore les warnings pour les dates dans les actions
         ignoredActions: [
-          'favorites/addCity', 
-          'favorites/updateCityWeather',
+          'favorites/fetchFavorites/fulfilled',
+          'favorites/addFavorite/fulfilled',
+          'favorites/removeFavorite/fulfilled',
           'travelPlans/addTravelPlan',
           'travelPlans/scheduleEmailReminder/fulfilled',
         ],

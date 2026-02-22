@@ -18,6 +18,7 @@ import ToastNotifications from "./components/ToastNotifications";
 import { addNotification } from "./features/notifications/notificationsSlice";
 import { markToastReminderSent } from "./features/travelPlans/travelPlansSlice";
 import { logout } from "./features/auth/authSlice";
+import { fetchFavorites } from "./features/favorites/favoritesSlice";
 
 /**
  * Composant App
@@ -35,6 +36,14 @@ function App() {
     dispatch(logout());
   };
 
+  // Fetch favorites when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchFavorites());
+    }
+  }, [isAuthenticated, dispatch]);
+
+  // Check travel reminders
   useEffect(() => {
     const checkTravelReminders = () => {
       const now = new Date();
@@ -133,7 +142,7 @@ function App() {
                     }`
                   }
                 >
-                  📊 Analytics
+                   Analytics
                 </NavLink>
               </div>
 

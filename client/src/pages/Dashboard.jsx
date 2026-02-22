@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CityCard from '../components/CityCard';
 import TravelPlanCard from '../components/TravelPlanCard';
-import { removeCity, clearAllFavorites } from '../features/favorites/favoritesSlice';
+import { removeFavorite, clearAllFavorites } from '../features/favorites/favoritesSlice';
 import { clearAllPlans } from '../features/travelPlans/travelPlansSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
    * Supprime une ville des favoris
    */
   const handleRemoveCity = (city) => {
-    dispatch(removeCity(city.id));
+    dispatch(removeFavorite(city.id));
     dispatch(
       addNotification({
         message: `${city.name} supprimee des destinations.`,

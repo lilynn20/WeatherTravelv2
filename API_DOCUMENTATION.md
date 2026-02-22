@@ -601,7 +601,7 @@ GET /health
 
 ---
 
-## 📊 Response Codes
+## Response Codes
 
 | Code | Description |
 |------|-------------|
