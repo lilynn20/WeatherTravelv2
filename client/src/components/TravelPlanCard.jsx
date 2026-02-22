@@ -116,7 +116,7 @@ const TravelPlanCard = ({ plan }) => {
         {/* Informations météo */}
         {plan.weatherInfo && (
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">🌤️ Météo prévue</h4>
+            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Météo prévue</h4>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
                 <span className="text-gray-600 dark:text-gray-400">Température:</span>

@@ -41,4 +41,10 @@ router.get("/packing/:city/checklist", analyticsController.getPackingChecklist);
 // GET /api/analytics/forecast/:city
 router.get("/forecast/:city", analyticsController.getForecast);
 
+/**
+ * Nearby Cities Recommendations
+ */
+// GET /api/analytics/nearby-cities/:city
+router.get("/nearby-cities/:city", analyticsController.getNearestCities);
+
 module.exports = router;

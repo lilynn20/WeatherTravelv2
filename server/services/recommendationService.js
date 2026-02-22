@@ -114,15 +114,19 @@ exports.calculateTravelScore = (weatherData, preferences = {}) => {
     scores.temperature = 2;
   }
 
-  // Humidity scoring (0-10)
-  if (humidity < 50) {
+  // Humidity scoring (0-10) - high humidity is uncomfortable
+  if (humidity < 40) {
     scores.humidity = 10;
-  } else if (humidity < 65) {
+  } else if (humidity < 50) {
+    scores.humidity = 9;
+  } else if (humidity < 60) {
     scores.humidity = 8;
+  } else if (humidity < 70) {
+    scores.humidity = 6;
   } else if (humidity < 80) {
-    scores.humidity = 5;
+    scores.humidity = 4;
   } else {
-    scores.humidity = 3;
+    scores.humidity = 2;
   }
 
   // Wind speed scoring (0-10)
@@ -150,21 +154,24 @@ exports.calculateTravelScore = (weatherData, preferences = {}) => {
   // Precipitation scoring (0-10)
   if (rain === 0) {
     scores.precipitation = 10;
-  } else if (rain < 1) {
-    scores.precipitation = 6;
-  } else if (rain < 3) {
-    scores.precipitation = 3;
+  } else if (rain < 0.5) {
+    scores.precipitation = 7;
+  } else if (rain < 2) {
+    scores.precipitation = 4;
+  } else if (rain < 5) {
+    scores.precipitation = 2;
   } else {
-    scores.precipitation = 1;
+    scores.precipitation = 0;
   }
 
   // Calculate weighted overall score
+  // Increased weight for humidity and precipitation (comfort factors)
   scores.overall = (
-    scores.temperature * 0.35 +
-    scores.humidity * 0.20 +
-    scores.windSpeed * 0.15 +
+    scores.temperature * 0.30 +
+    scores.humidity * 0.25 +
+    scores.windSpeed * 0.10 +
     scores.cloudiness * 0.15 +
-    scores.precipitation * 0.15
+    scores.precipitation * 0.20
   );
 
   return {
@@ -178,15 +185,18 @@ exports.calculateTravelScore = (weatherData, preferences = {}) => {
  * Get recommendation text based on score
  */
 function getRecommendationText(score) {
-  if (score >= 9) return "Perfect conditions! Ideal time to visit.";
-  if (score >= 8) return "Excellent conditions for travel.";
-  if (score >= 7) return "Very good weather conditions.";
-  if (score >= 6) return "Good conditions for most activities.";
-  if (score >= 5) return "Acceptable conditions, plan accordingly.";
-  if (score >= 4) return "Fair conditions, some activities may be affected.";
-  if (score >= 3) return "Below average conditions, consider alternatives.";
+  if (score >= 8.5) return "Perfect conditions! Ideal time to visit.";
+  if (score >= 7.5) return "Excellent conditions for travel.";
+  if (score >= 6.5) return "Very good weather conditions.";
+  if (score >= 6.0) return "Good conditions for most activities.";
+  if (score >= 5.0) return "Acceptable conditions, plan accordingly.";
+  if (score >= 3.5) return "Fair conditions, some activities may be affected.";
+  if (score >= 2.5) return "Below average conditions, consider alternatives.";
   return "Poor conditions, not recommended for travel.";
 }
+
+// Export the function so it can be used elsewhere
+exports.getRecommendationText = getRecommendationText;
 
 /**
  * AI-powered destination recommendations

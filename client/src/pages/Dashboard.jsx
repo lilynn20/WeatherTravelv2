@@ -133,7 +133,7 @@ const Dashboard = () => {
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
-              ✈️ Voyages planifiés ({travelPlans.length})
+              Voyages planifiés ({travelPlans.length})
               {activeTab === 'plans' && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
               )}
@@ -264,7 +264,7 @@ const Dashboard = () => {
             // Message vide plans
             <div className="text-center py-16">
               <div className="card max-w-2xl mx-auto">
-                <div className="text-6xl mb-4">✈️</div>
+
                 <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">
                   Aucun voyage planifié
                 </h3>

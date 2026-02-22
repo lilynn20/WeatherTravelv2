@@ -7,6 +7,7 @@ const ForecastScoresCard = ({ city }) => {
   const [forecast, setForecast] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
     if (city) {
@@ -19,7 +20,35 @@ const ForecastScoresCard = ({ city }) => {
     setError(null);
     try {
       const response = await axios.get(`${API_BASE_URL}/analytics/forecast/${city}`);
-      setForecast(response.data);
+      // Map API response to expected format
+      setForecast({
+        forecast: response.data.dailyForecasts.map((day) => {
+          // Calculate precipitation probability from hourly rain data or weather description
+          let precipProbability = 0;
+          if (day.hourlyData && day.hourlyData.length > 0) {
+            // Count hours with rain (either has rain amount > 0.1mm OR condition includes "rain"/"drizzle"/"thunderstorm")
+            const hoursWithRain = day.hourlyData.filter(h => {
+              const hasRain = (h.rain || 0) > 0.1; // More than 0.1mm
+              const isRainyCondition = (h.description || '').toLowerCase().includes('rain') || 
+                                      (h.description || '').toLowerCase().includes('drizzle') ||
+                                      (h.description || '').toLowerCase().includes('thunderstorm');
+              return hasRain || isRainyCondition;
+            }).length;
+            precipProbability = Math.round((hoursWithRain / day.hourlyData.length) * 100);
+          }
+          
+          return {
+            date: day.date,
+            temp: day.avgTemp,
+            condition: day.conditions,
+            humidity: day.hourlyData?.[0]?.humidity || 0,
+            windSpeed: day.hourlyData?.[0]?.windSpeed || 0,
+            precipProbability: precipProbability,
+            travelScore: day.avgTravelScore,
+            recommendation: day.recommendation
+          };
+        })
+      });
     } catch (err) {
       setError('Failed to fetch forecast scores');
     }
@@ -38,11 +67,19 @@ const ForecastScoresCard = ({ city }) => {
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-2xl">📊</span>
-        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-          Prochains 5 jours : {city}
-        </h3>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <div className="flex items-center gap-2">
+
+          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            Prochains 5 jours : {city}
+          </h3>
+        </div>
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="px-2 py-1 rounded-lg text-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition"
+        >
+          {isExpanded ? '▲' : '▼'}
+        </button>
       </div>
 
       {error && (
@@ -51,7 +88,7 @@ const ForecastScoresCard = ({ city }) => {
         </div>
       )}
 
-      {forecast && forecast.forecast && (
+      {isExpanded && forecast && forecast.forecast && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {forecast.forecast.map((day, idx) => (
             <div
@@ -85,14 +122,14 @@ const ForecastScoresCard = ({ city }) => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-400">Pluie:</span>
+                  <span className="text-slate-600 dark:text-slate-400">Precipitation:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">
                     {day.precipProbability}%
                   </span>
                 </div>
                 {day.recommendation && (
                   <p className="text-xs text-slate-600 dark:text-slate-400 italic pt-2 border-t border-slate-200 dark:border-slate-600 mt-2">
-                    💡 {day.recommendation}
+                    {day.recommendation}
                   </p>
                 )}
               </div>

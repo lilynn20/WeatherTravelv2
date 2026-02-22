@@ -11,6 +11,14 @@ const Analytics = () => {
 
   const handleSearch = (cityName) => {
     setSelectedCity(cityName);
+    // Set preferences to show recommendations
+    // Using climate and activity preferences
+    setPreferences({
+      climate: 'continental',
+      activities: 'sightseeing,culture',
+      tempMin: '15',
+      tempMax: '28'
+    });
   };
 
   const handlePreferencesChange = (prefs) => {
@@ -63,7 +71,7 @@ const Analytics = () => {
                         : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600'
                     }`}
                   >
-                    {mode === 'full' ? '🎒 Complet' : '✈️ Minimaliste'}
+                    {mode === 'full' ? 'Complet' : 'Minimaliste'}
                   </button>
                 ))}
               </div>
@@ -73,7 +81,7 @@ const Analytics = () => {
             <PackingListCard city={selectedCity} mode={packingMode} />
 
             {/* Recommendations */}
-            <RecommendationsCard preferences={preferences} />
+            <RecommendationsCard city={selectedCity} />
           </div>
         )}
 

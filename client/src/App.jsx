@@ -233,7 +233,7 @@ function App() {
                 Propulsé par OpenWeatherMap
               </a>
               <span>|</span>
-              <span>Made with ❤️ and React</span>
+              <span>Made with React</span>
             </div>
           </div>
         </div>

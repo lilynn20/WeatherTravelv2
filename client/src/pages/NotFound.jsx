@@ -22,7 +22,7 @@ const NotFound = () => {
           Page introuvable
         </h2>
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Oups ! Il semblerait que vous vous soyez perdu dans les nuages... ☁️
+          Oups ! Il semblerait que vous vous soyez perdu dans les nuages...
           <br />
           La page que vous recherchez n'existe pas ou a été déplacée.
         </p>

@@ -8,6 +8,7 @@ const PackingListCard = ({ city, mode = 'full' }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
+  const [isExpanded, setIsExpanded] = useState(true);
 
   useEffect(() => {
     if (city) {
@@ -22,7 +23,22 @@ const PackingListCard = ({ city, mode = 'full' }) => {
       const response = await axios.get(
         `${API_BASE_URL}/analytics/packing/${city}?mode=${mode}`
       );
-      setPackingList(response.data);
+      // Map API response to expected format
+      const { packingList } = response.data;
+      const essentialsArray = packingList.essentials 
+        ? Object.values(packingList.essentials).flat()
+        : [];
+      
+      setPackingList({
+        categories: {
+          essentials: essentialsArray,
+          clothing: packingList.clothing || [],
+          gear: [
+            ...(packingList.weatherGear || []),
+            ...(packingList.activityGear || [])
+          ]
+        }
+      });
       setCheckedItems({});
     } catch (err) {
       setError('Failed to fetch packing list');
@@ -42,11 +58,19 @@ const PackingListCard = ({ city, mode = 'full' }) => {
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-2xl">🎒</span>
-        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-          Liste de bagages pour {city}
-        </h3>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">🎒</span>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            Liste de bagages pour {city}
+          </h3>
+        </div>
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="px-2 py-1 rounded-lg text-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition"
+        >
+          {isExpanded ? '▲' : '▼'}
+        </button>
       </div>
 
       {error && (
@@ -55,7 +79,7 @@ const PackingListCard = ({ city, mode = 'full' }) => {
         </div>
       )}
 
-      {packingList && (
+      {isExpanded && packingList && (
         <div className="space-y-4">
           {packingList.categories &&
             Object.entries(packingList.categories).map(([category, items]) => (

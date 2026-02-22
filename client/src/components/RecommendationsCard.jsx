@@ -1,32 +1,47 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
 import LoadingSpinner from './LoadingSpinner';
 
-const RecommendationsCard = ({ preferences }) => {
+const RecommendationsCard = ({ city }) => {
+  const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (preferences) {
-      fetchRecommendations();
+    // Fetch nearby cities recommendations when city is selected
+    if (city) {
+      fetchNearestCities();
     }
-  }, [preferences]);
+  }, [city]);
 
-  const fetchRecommendations = async () => {
+  const fetchNearestCities = async () => {
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams(preferences);
       const response = await axios.get(
-        `${API_BASE_URL}/analytics/recommendations?${params}`
+        `${API_BASE_URL}/analytics/nearby-cities/${city}`
       );
-      setRecommendations(response.data.recommendations || []);
+      // Map API response to expected format
+      const mapped = (response.data.nearestCities || []).map((rec) => ({
+        destination: rec.name,
+        score: rec.travelScore,
+        reason: rec.reason,
+        temp: rec.weather?.temp || 'N/A',
+        humidity: rec.weather?.humidity || 'N/A',
+        distance: rec.distance
+      }));
+      setRecommendations(mapped);
     } catch (err) {
-      setError('Failed to fetch recommendations');
+      setError('Failed to fetch nearby cities');
     }
     setLoading(false);
+  };
+
+  const handleCityClick = (cityName) => {
+    navigate(`/city/${cityName}`);
   };
 
   if (loading) return <LoadingSpinner />;
@@ -34,9 +49,8 @@ const RecommendationsCard = ({ preferences }) => {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-2xl">🤖</span>
         <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-          Destinations recommandées
+          Cities Near {city}
         </h3>
       </div>
 
@@ -47,35 +61,42 @@ const RecommendationsCard = ({ preferences }) => {
       )}
 
       {recommendations.length > 0 ? (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recommendations.map((rec, idx) => (
-            <div
+            <button
               key={idx}
-              className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600"
+              onClick={() => handleCityClick(rec.destination)}
+              className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-600 hover:border-primary dark:hover:border-primary hover:shadow-lg hover:scale-105 transition-all duration-200 text-left cursor-pointer"
             >
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="font-bold text-slate-900 dark:text-slate-100">
+              <div className="flex justify-between items-start mb-3">
+                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-lg">
                   {rec.destination}
                 </h4>
-                <span className="text-lg">🌟 {rec.score}/10</span>
+                <span className="text-sm text-slate-500">{rec.distance}km away</span>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
                 {rec.reason}
               </p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div>
-                  <span className="text-slate-500 dark:text-slate-400">Temp:</span> {rec.temp}°C
+              <div className="space-y-1 text-xs border-t border-slate-200 dark:border-slate-600 pt-3">
+                <div className="flex justify-between">
+                  <span className="text-slate-500 dark:text-slate-400">Score:</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.score}/10</span>
                 </div>
-                <div>
-                  <span className="text-slate-500 dark:text-slate-400">Humidité:</span> {rec.humidity}%
+                <div className="flex justify-between">
+                  <span className="text-slate-500 dark:text-slate-400">Temp:</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.temp}°C</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500 dark:text-slate-400">Humidity:</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.humidity}%</span>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       ) : (
         <p className="text-slate-600 dark:text-slate-400">
-          Entrez vos préférences pour voir les recommandations
+          No nearby cities found within 100 km.
         </p>
       )}
     </div>
