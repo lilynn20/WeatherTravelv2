@@ -141,12 +141,20 @@ const CityDetail = () => {
   const weatherIcon = WEATHER_ICONS[currentWeather.weather[0]?.icon] || '🌤️';
   const dailyForecasts = getDailyForecasts();
   
-  // Calculate min/max from forecast data
+  // Calculate min/max for the next 24 hours from now
   const calculateMinMax = () => {
     if (!forecast?.list || forecast.list.length === 0) {
       return { min: currentWeather.main.temp_min, max: currentWeather.main.temp_max };
     }
-    const temps = forecast.list.slice(0, 8).map(item => item.main.temp);
+
+    const now = currentWeather.dt;
+    const windowEnd = now + 24 * 60 * 60;
+    const next24hItems = forecast.list.filter(item => item.dt >= now && item.dt <= windowEnd);
+    const targetItems = next24hItems.length > 0 ? next24hItems : forecast.list.slice(0, 8);
+
+    const temps = targetItems.map(item => item.main.temp);
+    temps.push(currentWeather.main.temp);
+
     return {
       min: Math.round(Math.min(...temps)),
       max: Math.round(Math.max(...temps))

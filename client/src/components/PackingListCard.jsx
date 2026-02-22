@@ -60,7 +60,6 @@ const PackingListCard = ({ city, mode = 'full' }) => {
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
       <div className="flex items-center justify-between gap-2 mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">🎒</span>
           <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
             Liste de bagages pour {city}
           </h3>

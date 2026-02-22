@@ -55,31 +55,6 @@ const Analytics = () => {
             {/* Forecast Scores */}
             <ForecastScoresCard city={selectedCity} />
 
-            {/* Packing Mode Selector */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
-                Mode de valise
-              </h3>
-              <div className="flex gap-4">
-                {['full', 'minimal'].map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setPackingMode(mode)}
-                    className={`px-6 py-2 rounded-lg font-medium transition ${
-                      packingMode === mode
-                        ? 'bg-primary text-white'
-                        : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600'
-                    }`}
-                  >
-                    {mode === 'full' ? 'Complet' : 'Minimaliste'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Packing List */}
-            <PackingListCard city={selectedCity} mode={packingMode} />
-
             {/* Recommendations */}
             <RecommendationsCard city={selectedCity} />
           </div>
