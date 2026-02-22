@@ -1,10 +1,17 @@
 import axios from 'axios';
-import { WEATHER_API_KEY, WEATHER_API_BASE_URL, UNITS, LANGUAGE } from '../../utils/constants';
+import { API_BASE_URL } from '../../utils/constants';
 
 /**
- * Service pour interagir avec l'API OpenWeatherMap
+ * Service pour interagir avec le backend Weather Travel API
  */
 class WeatherService {
+  constructor() {
+    this.api = axios.create({
+      baseURL: API_BASE_URL,
+      timeout: 10000,
+    });
+  }
+
   /**
    * Récupère la météo actuelle pour une ville
    * @param {string} cityName - Nom de la ville
@@ -12,14 +19,7 @@ class WeatherService {
    */
   async getCurrentWeather(cityName) {
     try {
-      const response = await axios.get(`${WEATHER_API_BASE_URL}/weather`, {
-        params: {
-          q: cityName,
-          appid: WEATHER_API_KEY,
-          units: UNITS,
-          lang: LANGUAGE,
-        },
-      });
+      const response = await this.api.get(`/weather/${cityName}`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -33,14 +33,7 @@ class WeatherService {
    */
   async getForecast(cityName) {
     try {
-      const response = await axios.get(`${WEATHER_API_BASE_URL}/forecast`, {
-        params: {
-          q: cityName,
-          appid: WEATHER_API_KEY,
-          units: UNITS,
-          lang: LANGUAGE,
-        },
-      });
+      const response = await this.api.get(`/analytics/forecast/${cityName}`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -48,22 +41,16 @@ class WeatherService {
   }
 
   /**
-   * Récupère la météo par coordonnées géographiques
+   * Récupère la météo par coordonnées géographiques (utilise la ville la plus proche)
    * @param {number} lat - Latitude
    * @param {number} lon - Longitude
    * @returns {Promise} Données météo
    */
   async getWeatherByCoords(lat, lon) {
     try {
-      const response = await axios.get(`${WEATHER_API_BASE_URL}/weather`, {
-        params: {
-          lat,
-          lon,
-          appid: WEATHER_API_KEY,
-          units: UNITS,
-          lang: LANGUAGE,
-        },
-      });
+      // Note: Cette fonction utilise les données du service frontend
+      // Pour une meilleure intégration, considérez l'ajout d'un endpoint backend pour les coordonnées
+      const response = await this.api.get(`/weather?lat=${lat}&lon=${lon}`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);

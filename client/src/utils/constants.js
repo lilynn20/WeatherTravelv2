@@ -1,7 +1,9 @@
-// Configuration de l'API OpenWeatherMap
-// Pour utiliser cette application, vous devez obtenir une clé API gratuite sur https://openweathermap.org/api
+// Configuration de l'API Backend
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+// Configuration de l'API OpenWeatherMap (now handled by backend)
 export const WEATHER_API_KEY = '03cccef598fb7a65c3bc8b8eac673a11'; // À remplacer par votre clé
-export const WEATHER_API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
+export const WEATHER_API_BASE_URL = `${API_BASE_URL}/weather`;
 
 // Unités de mesure
 export const UNITS = 'metric'; // metric = Celsius, imperial = Fahrenheit
