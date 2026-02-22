@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { t } from '../utils/i18n';
 
 /**
  * Page NotFound (404)
@@ -19,12 +20,10 @@ const NotFound = () => {
         {/* Message d'erreur */}
         <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-          Page introuvable
+          {t('not_found_title')}
         </h2>
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Oups ! Il semblerait que vous vous soyez perdu dans les nuages...
-          <br />
-          La page que vous recherchez n'existe pas ou a été déplacée.
+          {t('not_found_desc')}
         </p>
 
         {/* Actions */}
@@ -33,25 +32,25 @@ const NotFound = () => {
             onClick={() => navigate('/')}
             className="btn-primary text-lg"
           >
-             Retour à l'accueil
+             {t('back_home')}
           </button>
           <button
             onClick={() => navigate('/dashboard')}
             className="btn-secondary text-lg"
           >
-            Mes destinations
+            {t('nav_destinations')}
           </button>
         </div>
 
         {/* Suggestions */}
         <div className="mt-12 p-6 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg border border-blue-200 dark:border-blue-800">
           <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-3">
-            Vous pourriez également :
+            {t('suggestions_title')}
           </h3>
           <ul className="text-left text-blue-800 dark:text-blue-200 space-y-2">
-            <li>Rechercher une nouvelle ville</li>
-            <li>Consulter vos villes favorites</li>
-            <li>Explorer les détails météo d'une destination</li>
+            <li>{t('suggestion_search')}</li>
+            <li>{t('suggestion_favorites')}</li>
+            <li>{t('suggestion_details')}</li>
           </ul>
         </div>
 

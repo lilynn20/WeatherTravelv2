@@ -15,6 +15,7 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "./utils/useTheme.jsx";
+import { t } from "./utils/i18n";
 import ToastNotifications from "./components/ToastNotifications";
 import { addNotification } from "./features/notifications/notificationsSlice";
 import { markToastReminderSent } from "./features/travelPlans/travelPlansSlice";
@@ -114,7 +115,7 @@ function App() {
                     }`
                   }
                 >
-                  Recherche
+                  {t('nav_search')}
                 </NavLink>
                 <NavLink
                   to="/dashboard"
@@ -126,7 +127,7 @@ function App() {
                     }`
                   }
                 >
-                  Mes destinations
+                  {t('nav_destinations')}
                   {favoritesCount > 0 && (
                     <span className="ml-2 bg-primary/15 text-primary text-xs rounded-full px-2 py-0.5">
                       {favoritesCount}
@@ -143,7 +144,7 @@ function App() {
                     }`
                   }
                 >
-                   Analytics
+                   {t('nav_analytics')}
                 </NavLink>
               </div>
 
@@ -157,7 +158,7 @@ function App() {
                       onClick={handleLogout}
                       className="px-4 py-1.5 rounded-full text-sm font-semibold border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                     >
-                      Déconnexion
+                      {t('nav_logout')}
                     </button>
                   </>
                 ) : (
@@ -172,7 +173,7 @@ function App() {
                         }`
                       }
                     >
-                      Connexion
+                      {t('nav_login')}
                     </NavLink>
                     <NavLink
                       to="/signup"
@@ -184,7 +185,7 @@ function App() {
                         }`
                       }
                     >
-                      S'inscrire
+                      {t('nav_signup')}
                     </NavLink>
                   </>
                 )}
@@ -249,7 +250,7 @@ function App() {
         <div className="max-w-6xl mx-auto border-t border-slate-200/60 dark:border-slate-700/60 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-slate-500 dark:text-slate-400 text-sm">
-              © 2026 WeatherTravel - Projet React avec Redux Toolkit
+              {t('footer_copy')}
             </div>
             <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
               <a
@@ -258,10 +259,10 @@ function App() {
                 rel="noopener noreferrer"
                 className="hover:text-slate-700 dark:hover:text-slate-200"
               >
-                Propulsé par OpenWeatherMap
+                {t('footer_powered')}
               </a>
               <span>|</span>
-              <span>Made with React</span>
+              <span>{t('footer_made_with')}</span>
             </div>
           </div>
         </div>

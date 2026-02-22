@@ -6,6 +6,7 @@ import TravelPlanCard from '../components/TravelPlanCard';
 import { removeFavorite, clearAllFavorites } from '../features/favorites/favoritesSlice';
 import { clearAllPlans } from '../features/travelPlans/travelPlansSlice';
 import { addNotification } from '../features/notifications/notificationsSlice';
+import { t } from '../utils/i18n';
 
 /**
  * Page Dashboard
@@ -91,13 +92,13 @@ const Dashboard = () => {
             <div>
               <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 mb-2">
                 <span className="accent-dot bg-fuchsia-300/80"></span>
-                Tableau de bord
+                {t('dashboard_label')}
               </div>
               <h1 className="text-4xl md:text-5xl brand-script text-slate-900 dark:text-slate-100 mb-2">
-                Mes destinations
+                {t('dashboard_title')}
               </h1>
               <p className="text-slate-600 dark:text-slate-300">
-                Gere vos destinations favorites et vos voyages planifies
+                {t('dashboard_desc')}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -105,7 +106,7 @@ const Dashboard = () => {
                 onClick={handleGoToSearch}
                 className="btn-secondary"
               >
-                ➕ Ajouter une ville
+                ➕ {t('dashboard_add_city')}
               </button>
             </div>
           </div>
@@ -120,7 +121,7 @@ const Dashboard = () => {
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
-              📌 Favoris ({favorites.length})
+              📌 {t('favorites_tab')} ({favorites.length})
               {activeTab === 'favorites' && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
               )}
@@ -133,7 +134,7 @@ const Dashboard = () => {
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300'
               }`}
             >
-              Voyages planifiés ({travelPlans.length})
+              {t('plans_tab')} ({travelPlans.length})
               {activeTab === 'plans' && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
               )}
@@ -148,14 +149,14 @@ const Dashboard = () => {
                   onClick={handleClearAll}
                   className={`${showConfirmDelete ? 'btn-danger' : 'btn-secondary'}`}
                 >
-                  {showConfirmDelete ? '⚠️ Confirmer la suppression' : '🗑️ Tout effacer'}
+                  {showConfirmDelete ? `⚠️ ${t('confirm_delete')}` : `🗑️ ${t('clear_all')}`}
                 </button>
               </div>
               
               {/* Barre de statistiques favoris */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="card">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Température moyenne</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('avg_temp')}</p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {Math.round(
                       favorites.reduce((acc, city) => acc + city.temp, 0) / favorites.length
@@ -163,7 +164,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="card">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Ville la plus chaude</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('hottest_city')}</p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {favorites.reduce((max, city) => 
                       city.temp > max.temp ? city : max
@@ -171,7 +172,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="card">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Ville la plus froide</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('coldest_city')}</p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {favorites.reduce((min, city) => 
                       city.temp < min.temp ? city : min
@@ -188,7 +189,7 @@ const Dashboard = () => {
                 onClick={handleClearAll}
                 className={`${showConfirmDelete ? 'btn-danger' : 'btn-secondary'}`}
               >
-                {showConfirmDelete ? '⚠️ Confirmer la suppression' : '🗑️ Tout effacer'}
+                  {showConfirmDelete ? `⚠️ ${t('confirm_delete')}` : `🗑️ ${t('clear_all')}`}
               </button>
             </div>
           )}
@@ -213,17 +214,16 @@ const Dashboard = () => {
               <div className="card max-w-2xl mx-auto">
                 <div className="text-6xl mb-4">📍</div>
                 <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">
-                  Aucune ville épinglée
+                  {t('no_favorites_title')}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Commencez par rechercher une ville et ajoutez-la à vos favoris
-                  pour la retrouver ici facilement.
+                  {t('no_favorites_desc')}
                 </p>
                 <button
                   onClick={handleGoToSearch}
                   className="btn-primary"
                 >
-                  🔍 Rechercher une ville
+                  🔍 {t('search_city')}
                 </button>
               </div>
             </div>
@@ -236,7 +236,7 @@ const Dashboard = () => {
               {futurePlans.length > 0 && (
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    🚀 Voyages à venir ({futurePlans.length})
+                    🚀 {t('upcoming_trips')} ({futurePlans.length})
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {futurePlans.map((plan) => (
@@ -250,7 +250,7 @@ const Dashboard = () => {
               {pastPlans.length > 0 && (
                 <div>
                   <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2">
-                    📚 Voyages passés ({pastPlans.length})
+                    📚 {t('past_trips')} ({pastPlans.length})
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {pastPlans.map((plan) => (
@@ -266,17 +266,16 @@ const Dashboard = () => {
               <div className="card max-w-2xl mx-auto">
 
                 <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">
-                  Aucun voyage planifié
+                  {t('no_plans_title')}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Recherchez une ville et cliquez sur "Planifier un voyage" pour
-                  ajouter une date de voyage et recevoir un rappel par email.
+                  {t('no_plans_desc')}
                 </p>
                 <button
                   onClick={handleGoToSearch}
                   className="btn-primary"
                 >
-                  🔍 Rechercher une destination
+                  🔍 {t('search_destination')}
                 </button>
               </div>
             </div>
@@ -288,12 +287,12 @@ const Dashboard = () => {
           (activeTab === 'plans' && travelPlans.length > 0)) && (
           <div className="mt-12 bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl p-6">
             <h4 className="font-semibold text-slate-900 dark:text-slate-200 mb-2 flex items-center gap-2">
-              💡 Conseil {activeTab === 'favorites' ? 'de voyage' : 'pour vos voyages'}
+              💡 {activeTab === 'favorites' ? t('tip_title_favorites') : t('tip_title_plans')}
             </h4>
             <p className="text-slate-600 dark:text-slate-300 text-sm">
-              {activeTab === 'favorites' 
-                ? 'Consultez les détails météo de chaque ville pour planifier au mieux vos déplacements. Les températures et conditions peuvent varier rapidement !'
-                : 'Vérifiez la météo quelques jours avant votre départ pour ajuster vos bagages. Les prévisions peuvent évoluer !'}
+              {activeTab === 'favorites'
+                ? t('tip_favorites')
+                : t('tip_plans')}
             </p>
           </div>
         )}

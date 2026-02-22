@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import i18n from "../i18n";
+import { t } from "../utils/i18n";
 
 const SETTINGS_KEY = "weathertravel_settings";
 
@@ -33,6 +35,7 @@ const Settings = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    i18n.changeLanguage(settings.language);
     setSaved(true);
   };
 
@@ -41,10 +44,10 @@ const Settings = () => {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl brand-script text-slate-900 dark:text-slate-100 mb-2">
-            Parametres
+            {t('settings_title')}
           </h1>
           <p className="text-slate-600 dark:text-slate-300">
-            Personnalisez vos preferences de recherche
+            {t('settings_desc')}
           </p>
         </div>
 
@@ -52,7 +55,7 @@ const Settings = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
-                Ville par defaut
+                {t('settings_home_city')}
               </label>
               <input
                 type="text"
@@ -66,7 +69,7 @@ const Settings = () => {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
-                Unites
+                {t('settings_units')}
               </label>
               <select
                 name="units"
@@ -74,14 +77,14 @@ const Settings = () => {
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="metric">Celsius</option>
-                <option value="imperial">Fahrenheit</option>
+                <option value="metric">{t('units_celsius')}</option>
+                <option value="imperial">{t('units_fahrenheit')}</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
-                Langue
+                {t('settings_language')}
               </label>
               <select
                 name="language"
@@ -89,8 +92,8 @@ const Settings = () => {
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="fr">Francais</option>
-                <option value="en">Anglais</option>
+                <option value="fr">{t('lang_fr')}</option>
+                <option value="en">{t('lang_en')}</option>
               </select>
             </div>
 
@@ -99,11 +102,11 @@ const Settings = () => {
                 type="submit"
                 className="bg-blue-200 hover:bg-blue-300 text-blue-900 font-semibold px-6 py-2 rounded-lg transition-all duration-200"
               >
-                Enregistrer
+                {t('settings_save')}
               </button>
               {saved && (
                 <span className="text-sm text-green-700 dark:text-green-300">
-                  Parametres enregistres
+                  {t('settings_saved')}
                 </span>
               )}
             </div>

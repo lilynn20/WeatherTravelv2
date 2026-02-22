@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchForm from "../components/SearchForm";
+import { t } from "../utils/i18n";
 import WeatherCard from "../components/WeatherCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
@@ -56,10 +57,10 @@ const Home = () => {
             WeatherTravel
           </h1>
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">
-            Assistant Voyage Meteo
+            {t('home_subtitle')}
           </p>
           <p className="text-lg text-slate-600 dark:text-slate-300 mt-4">
-            Planifiez vos voyages en fonction de la meteo
+            {t('home_desc')}
           </p>
         </div>
 
@@ -97,11 +98,10 @@ const Home = () => {
             <div className="card max-w-2xl mx-auto">
               <div className="text-6xl mb-4">☀️🌧️❄️</div>
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
-                Commencez votre recherche
+                {t('start_title')}
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Entrez le nom d'une ville pour découvrir sa météo actuelle et
-                planifier votre voyage en toute sérénité.
+                {t('start_desc')}
               </p>
             </div>
           </div>
@@ -112,28 +112,28 @@ const Home = () => {
           <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">🔍</div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Recherchez
+              {t('card_search_title')}
             </h4>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              Entrez le nom d'une ville pour consulter sa meteo
+              {t('card_search_desc')}
             </p>
           </div>
           <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">⭐</div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Epinglez
+              {t('card_pin_title')}
             </h4>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              Ajoutez vos destinations favorites a votre dashboard
+              {t('card_pin_desc')}
             </p>
           </div>
           <div className="text-center p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-2xl bg-white/70 dark:bg-slate-900/60">
             <div className="text-4xl mb-3">✈️</div>
             <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Voyagez
+              {t('card_travel_title')}
             </h4>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              Planifiez vos deplacements selon les conditions meteo
+              {t('card_travel_desc')}
             </p>
           </div>
         </div>

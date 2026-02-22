@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ERROR_MESSAGES } from '../utils/constants';
+import { t } from '../utils/i18n';
 
 /**
  * Composant SearchForm
@@ -22,13 +22,13 @@ const SearchForm = ({ onSearch, loading = false }) => {
     // Validation : vérifier que le champ n'est pas vide
     const trimmedCity = cityName.trim();
     if (!trimmedCity) {
-      setError(ERROR_MESSAGES.EMPTY_FIELD);
+      setError(t('error_empty'));
       return;
     }
 
     // Validation : longueur minimale
     if (trimmedCity.length < 2) {
-      setError('Le nom de la ville doit contenir au moins 2 caractères.');
+      setError(t('error_short'));
       return;
     }
 
@@ -61,11 +61,11 @@ const SearchForm = ({ onSearch, loading = false }) => {
         },
         (error) => {
           setGeoLoading(false);
-          setError('Impossible d\'accéder à votre position.');
+          setError(t('geo_denied'));
         }
       );
     } else {
-      setError('La géolocalisation n\'est pas supportée par votre navigateur.');
+      setError(t('geo_unsupported'));
     }
   };
 
@@ -78,7 +78,7 @@ const SearchForm = ({ onSearch, loading = false }) => {
               type="text"
               value={cityName}
               onChange={handleChange}
-              placeholder="Entrez le nom d'une ville (ex: Paris, London, Tokyo)"
+              placeholder={t('search_placeholder')}
               className={`input-field ${error ? 'border-red-500 focus:ring-red-500' : ''}`}
               disabled={loading}
               aria-label="Nom de la ville"
@@ -110,10 +110,10 @@ const SearchForm = ({ onSearch, loading = false }) => {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Recherche...
+                {t('search_loading')}
               </span>
             ) : (
-              '🔍 Rechercher'
+              `🔍 ${t('search_button')}`
             )}
           </button>
         </div>
@@ -124,7 +124,7 @@ const SearchForm = ({ onSearch, loading = false }) => {
           disabled={loading || geoLoading}
           className="btn-secondary text-sm self-start"
         >
-          {geoLoading ? 'Localisation...' : '📍 Utiliser ma position'}
+          {geoLoading ? t('geo_loading') : `📍 ${t('geo_button')}`}
         </button>
       </div>
     </form>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
 import { getStoredSettings, getTempUnitLabel } from '../utils/settings';
+import { t } from '../utils/i18n';
 import LoadingSpinner from './LoadingSpinner';
 
 const ForecastScoresCard = ({ city }) => {
@@ -77,7 +78,7 @@ const ForecastScoresCard = ({ city }) => {
         <div className="flex items-center gap-2">
 
           <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-            Prochains 5 jours : {city}
+            {t('next_5_days', { city })}
           </h3>
         </div>
         <button
@@ -116,19 +117,19 @@ const ForecastScoresCard = ({ city }) => {
 
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-400">Temp:</span>
+                  <span className="text-slate-600 dark:text-slate-400">{t('temp')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">
                     {day.temp}°{tempUnit}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-400">Condition:</span>
+                  <span className="text-slate-600 dark:text-slate-400">{t('condition')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">
                     {day.condition}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-600 dark:text-slate-400">Precipitation:</span>
+                  <span className="text-slate-600 dark:text-slate-400">{t('precipitation')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">
                     {day.precipProbability}%
                   </span>

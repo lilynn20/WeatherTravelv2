@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import App from "./App.jsx";
 import { store } from "./app/store.js";
 import { ThemeProvider } from "./utils/useTheme.jsx";
+import "./i18n.js";
 import "./index.css";
 
 /**

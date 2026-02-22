@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { login, clearError } from '../features/auth/authSlice';
+import { t } from '../utils/i18n';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Login = () => {
             WeatherTravel
           </h1>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-            Connexion
+            {t('login_title')}
           </h2>
         </div>
 
@@ -42,7 +43,7 @@ const Login = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Email
+              {t('email_label')}
             </label>
             <input
               type="email"
@@ -56,7 +57,7 @@ const Login = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Mot de passe
+              {t('password_label')}
             </label>
             <input
               type="password"
@@ -73,14 +74,14 @@ const Login = () => {
             disabled={loading}
             className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition"
           >
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? t('login_loading') : t('login_submit')}
           </button>
         </form>
 
         <p className="text-center mt-6 text-slate-600 dark:text-slate-400">
-          Pas de compte?{' '}
+          {t('no_account')}{' '}
           <Link to="/signup" className="text-primary hover:underline font-medium">
-            S'inscrire
+            {t('nav_signup')}
           </Link>
         </p>
       </div>

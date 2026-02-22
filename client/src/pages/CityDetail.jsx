@@ -8,6 +8,7 @@ import { addNotification } from '../features/notifications/notificationsSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import { WEATHER_ICONS, API_BASE_URL } from '../utils/constants';
+import { t } from '../utils/i18n';
 import { getStoredSettings, getTempUnitLabel, getWindUnitLabel } from '../utils/settings';
 
 /**
@@ -131,7 +132,7 @@ const CityDetail = () => {
             onClick={() => navigate('/')}
             className="btn-secondary mt-4"
           >
-            ← Retour à la recherche
+            ← {t('back')}
           </button>
         </div>
       </div>
@@ -178,7 +179,7 @@ const CityDetail = () => {
           onClick={() => navigate(-1)}
           className="bg-blue-200 hover:bg-blue-300 text-blue-900 font-semibold px-6 py-2 rounded-lg transition-all duration-200 mb-6"
         >
-          Retour
+          {t('back')}
         </button>
 
         {/* En-tête avec météo actuelle */}
@@ -188,7 +189,7 @@ const CityDetail = () => {
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-8 rounded-lg">
               <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400 mb-3">
                 <span className="accent-dot bg-blue-400"></span>
-                Météo du jour
+                {t('today_weather')}
               </div>
               <h1 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white mb-2">
                 {currentWeather.name}
@@ -210,7 +211,7 @@ const CityDetail = () => {
                     <span className="text-3xl text-gray-600 dark:text-gray-400">{tempUnit}</span>
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 mt-3">
-                    🌡️ Ressenti : {Math.round(currentWeather.main.feels_like)}°{tempUnit}
+                    🌡️ {t('feels_like')} : {Math.round(currentWeather.main.feels_like)}°{tempUnit}
                   </p>
                 </div>
               </div>
@@ -220,12 +221,12 @@ const CityDetail = () => {
                   onClick={handleAddToFavorites}
                   className="w-full bg-yellow-200 hover:bg-yellow-300 text-yellow-900 font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 >
-                  Épingler cette ville
+                  {t('pin_city')}
                 </button>
               )}
               {isFavorite && (
                 <div className="w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-3 rounded-lg text-center">
-                  Ville épinglée
+                  {t('pinned_city')}
                 </div>
               )}
             </div>
@@ -233,31 +234,31 @@ const CityDetail = () => {
             {/* Colonne droite - Détails */}
             <div className="grid grid-cols-2 gap-4 p-8">
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Min / Max</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('min_max')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {minTemp}° / {maxTemp}°{tempUnit}
                 </p>
               </div>
               <div className="bg-cyan-50 dark:bg-cyan-900/20 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Humidité</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('humidity')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.main.humidity}%</p>
               </div>
               <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg border border-teal-200 dark:border-teal-800 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Vent</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('wind')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.wind.speed} {windUnit}</p>
               </div>
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Pression</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('pressure')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.main.pressure} hPa</p>
               </div>
               <div className="bg-sky-50 dark:bg-sky-900/20 p-4 rounded-lg border border-sky-200 dark:border-sky-800 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Visibilité</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('visibility')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {currentWeather.visibility ? `${(currentWeather.visibility / 1000).toFixed(1)} km` : 'N/A'}
                 </p>
               </div>
               <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600 hover:shadow-lg transition">
-                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Nébulosité</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{t('cloudiness')}</p>
                 <p className="text-lg font-bold text-gray-900 dark:text-white">{currentWeather.clouds.all}%</p>
               </div>
             </div>
@@ -268,7 +269,7 @@ const CityDetail = () => {
         {analyticsForecast && analyticsForecast.length > 0 && (
           <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
             <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-8">
-              14-Day Forecast
+              {t('forecast_14')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {analyticsForecast.map((day, idx) => {
@@ -326,17 +327,17 @@ const CityDetail = () => {
                       {day.condition}
                     </p>
                     <div className={`px-3 py-2 rounded-lg text-xs font-bold text-center mb-3 ${colors.badge}`}>
-                      Score: {day.avgTravelScore.toFixed(1)}/10
+                      {t('score')}: {day.avgTravelScore.toFixed(1)}/10
                     </div>
                     <p className="text-xs text-slate-700 dark:text-slate-300 italic mb-4 leading-relaxed">
                       {day.recommendation}
                     </p>
                     <div className="bg-white/50 dark:bg-slate-900/50 rounded-lg p-3 border border-slate-200 dark:border-slate-600 flex justify-between gap-2">
                       <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                        {day.hourlyData?.[0]?.humidity || 'N/A'}% humidity
+                        {day.hourlyData?.[0]?.humidity || 'N/A'}% {t('humidity_label')}
                       </span>
                       <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                        {day.hourlyData?.[0]?.windSpeed.toFixed(1) || 'N/A'} {windUnit} wind
+                        {day.hourlyData?.[0]?.windSpeed.toFixed(1) || 'N/A'} {windUnit} {t('wind_label')}
                       </span>
                     </div>
                   </div>

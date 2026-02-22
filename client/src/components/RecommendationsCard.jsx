@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../utils/constants';
 import { getStoredSettings, getTempUnitLabel } from '../utils/settings';
+import { t } from '../utils/i18n';
 import LoadingSpinner from './LoadingSpinner';
 
 const RecommendationsCard = ({ city }) => {
@@ -55,7 +56,7 @@ const RecommendationsCard = ({ city }) => {
     <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg">
       <div className="flex items-center gap-2 mb-4">
         <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-          Cities Near {city}
+          {t('near_cities', { city })}
         </h3>
       </div>
 
@@ -77,22 +78,22 @@ const RecommendationsCard = ({ city }) => {
                 <h4 className="font-bold text-slate-900 dark:text-slate-100 text-lg">
                   {rec.destination}
                 </h4>
-                <span className="text-sm text-slate-500">{rec.distance}km away</span>
+                <span className="text-sm text-slate-500">{t('km_away', { distance: rec.distance })}</span>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
                 {rec.reason}
               </p>
               <div className="space-y-1 text-xs border-t border-slate-200 dark:border-slate-600 pt-3">
                 <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-slate-400">Score:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{t('score')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.score}/10</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-slate-400">Temp:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{t('temp')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.temp}°{tempUnit}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-slate-400">Humidity:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{t('humidity')}:</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-100">{rec.humidity}%</span>
                 </div>
               </div>
@@ -101,7 +102,7 @@ const RecommendationsCard = ({ city }) => {
         </div>
       ) : (
         <p className="text-slate-600 dark:text-slate-400">
-          No nearby cities found within 100 km.
+          {t('near_empty')}
         </p>
       )}
     </div>

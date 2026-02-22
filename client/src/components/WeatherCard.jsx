@@ -5,6 +5,7 @@ import { addFavorite, selectIsFavorite } from '../features/favorites/favoritesSl
 import { addNotification } from '../features/notifications/notificationsSlice';
 import { WEATHER_ICONS } from '../utils/constants';
 import { getStoredSettings, getTempUnitLabel, getWindUnitLabel } from '../utils/settings';
+import { t } from '../utils/i18n';
 import TravelDateModal from './TravelDateModal';
 
 /**
@@ -109,26 +110,26 @@ const WeatherCard = ({ weatherData }) => {
             <span className="text-2xl text-gray-600 dark:text-gray-400">{tempUnit}</span>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-3">
-            Ressenti : {feelsLike}°{tempUnit}
+            {t('feels_like')} : {feelsLike}°{tempUnit}
           </p>
         </div>
 
         {/* Informations détaillées en grille */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 px-6">
           <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800 text-center hover:bg-blue-100 dark:hover:bg-blue-900/30 transition">
-            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Humidité</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('humidity')}</p>
             <p className="font-bold text-gray-900 dark:text-white text-sm">{main.humidity}%</p>
           </div>
           <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200 dark:border-teal-800 text-center hover:bg-teal-100 dark:hover:bg-teal-900/30 transition">
-            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Vent</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('wind')}</p>
             <p className="font-bold text-gray-900 dark:text-white text-sm">{wind.speed} {windUnit}</p>
           </div>
           <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200 dark:border-amber-800 text-center hover:bg-amber-100 dark:hover:bg-amber-900/30 transition">
-            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Min/Max</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('min_max')}</p>
             <p className="font-bold text-gray-900 dark:text-white text-sm">{Math.round(main.temp_min)}°/{Math.round(main.temp_max)}°{tempUnit}</p>
           </div>
           <div className="bg-rose-50 dark:bg-rose-900/20 p-3 rounded-lg border border-rose-200 dark:border-rose-800 text-center hover:bg-rose-100 dark:hover:bg-rose-900/30 transition">
-            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Pression</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{t('pressure')}</p>
             <p className="font-bold text-gray-900 dark:text-white text-sm">{main.pressure}</p>
           </div>
         </div>
@@ -141,21 +142,21 @@ const WeatherCard = ({ weatherData }) => {
                 onClick={handleAddToFavorites}
                 className="rounded-lg bg-yellow-200 hover:bg-yellow-300 text-yellow-900 text-sm font-bold px-4 py-3 shadow-md hover:shadow-lg transition-all duration-200"
               >
-                Épingler
+                {t('pin')}
               </button>
             ) : (
               <button
                 disabled
                 className="rounded-lg bg-green-200 text-green-900 text-sm font-bold px-4 py-3 cursor-not-allowed"
               >
-                Épinglée
+                {t('pinned')}
               </button>
             )}
             <button
               onClick={handleViewDetails}
               className="rounded-lg bg-cyan-200 hover:bg-cyan-300 text-cyan-900 text-sm font-bold px-4 py-3 shadow-md hover:shadow-lg transition-all duration-200"
             >
-              Détails
+              {t('details')}
             </button>
           </div>
           
@@ -163,7 +164,7 @@ const WeatherCard = ({ weatherData }) => {
             onClick={handlePlanTravel}
             className="w-full rounded-lg bg-green-200 hover:bg-green-300 text-green-900 text-sm font-bold px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200"
           >
-            Planifier un voyage
+            {t('plan_trip')}
           </button>
         </div>
       </div>

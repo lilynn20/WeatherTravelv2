@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { signup, clearError } from '../features/auth/authSlice';
+import { t } from '../utils/i18n';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert('Les mots de passe ne correspondent pas');
+      alert(t('password_mismatch'));
       return;
     }
 
@@ -47,7 +48,7 @@ const Signup = () => {
             WeatherTravel
           </h1>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-            S'inscrire
+            {t('signup_title')}
           </h2>
         </div>
 
@@ -60,7 +61,7 @@ const Signup = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Nom Complet
+              {t('name_label')}
             </label>
             <input
               type="text"
@@ -74,7 +75,7 @@ const Signup = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Email
+              {t('email_label')}
             </label>
             <input
               type="email"
@@ -88,7 +89,7 @@ const Signup = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Mot de passe
+              {t('password_label')}
             </label>
             <input
               type="password"
@@ -102,7 +103,7 @@ const Signup = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Confirmer le mot de passe
+              {t('confirm_password')}
             </label>
             <input
               type="password"
@@ -119,14 +120,14 @@ const Signup = () => {
             disabled={loading}
             className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition"
           >
-            {loading ? 'Inscription...' : 'S\'inscrire'}
+            {loading ? t('signup_loading') : t('signup_submit')}
           </button>
         </form>
 
         <p className="text-center mt-6 text-slate-600 dark:text-slate-400">
-          Vous avez déjà un compte?{' '}
+          {t('have_account')}{' '}
           <Link to="/login" className="text-primary hover:underline font-medium">
-            Se connecter
+            {t('login_submit')}
           </Link>
         </p>
       </div>
